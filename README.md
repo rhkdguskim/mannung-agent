@@ -1,112 +1,229 @@
-# claude-model-router
+# mannung-agent (만능 에이전트)
 
-**Intelligent multi-model routing plugin for Claude Code**
+> All-Purpose AI Development Agent for Claude Code
+> 모든 개발 작업을 최적의 AI 모델로 자동 라우팅하는 만능 개발 에이전트
 
-작업 유형에 따라 자동으로 최적의 AI 모델을 선택합니다.
-
-## Features
-
-| 작업 유형 | 모델 | 이유 |
-|----------|------|------|
-| **파일 탐색/검색** | Gemini Pro | 대용량 컨텍스트, 빠른 검색 |
-| **Frontend 개발** | Gemini Flash | 빠른 응답, UI/UX 작업에 적합 |
-| **논리적 추론** | Codex (GPT-5/o3) | 복잡한 알고리즘, 디버깅 |
-| **일반 작업** | Gemini Flash | 비용 효율적 |
-
-## Quick Start
-
-### Step 1: Install Plugin
-
-```bash
-/plugin marketplace add https://github.com/rhkdguskim/claude-model-router
-/plugin install claude-model-router
+```
+┌─────────────────────────────────────────┐
+│ mannung-agent v2.0                     │
+├─────────────────────────────────────────┤
+│ Gemini:  Ready (antigravity-gemini)    │
+│ Codex:   Ready (codex-shell)           │
+│ GLM:     Ready (Z.AI API)              │
+│ Claude:  Ready (native)                │
+└─────────────────────────────────────────┘
 ```
 
-### Step 2: Setup
+## What It Does
 
-```bash
-/claude-model-router:router-setup
+하나의 작업을 입력하면, 자동으로 최적의 AI 모델을 선택해서 실행합니다.
+
+| You Say | Model Used | Why |
+|---------|-----------|-----|
+| "코드베이스 분석해줘" | Gemini Pro | 1M context window |
+| "React 컴포넌트 만들어줘" | Gemini Flash | Fast UI iteration |
+| "알고리즘 최적화해줘" | Codex | Best reasoning |
+| "구현 계획 세워줘" | GLM-4.7 | 128K output, cost-effective |
+| "오타 고쳐줘" | Gemini Flash | Fastest response |
+| "대충 만들어줘" | Auto-select | Vibe mode |
+| "끝까지 완성해줘" | Auto (chained) | Autopilot mode |
+
+Real-time routing display:
+```
+┌─────────────────────────────────────────┐
+│ mannung-agent routing                  │
+├─────────────────────────────────────────┤
+│ Model:   Codex                          │
+│ Backend: codex-shell MCP                │
+│ Task:    Optimize algorithm             │
+└─────────────────────────────────────────┘
 ```
 
-### Step 3: Use
-
-자동 라우팅:
+Parallel execution:
 ```
-route: React 컴포넌트 만들어줘
+┌─────────────────────────────────────────┐
+│ mannung-agent routing [PARALLEL]       │
+├─────────────────────────────────────────┤
+│ Model:   Gemini Pro                     │
+│ Backend: antigravity-gemini MCP         │
+│ Task:    Structure analysis             │
+│ Mode:    Background (parallel)          │
+└─────────────────────────────────────────┘
 ```
 
-또는 직접 모델 지정:
-```
-route:gemini-pro 이 코드베이스 분석해줘
-route:codex 이 알고리즘 최적화해줘
-```
-
-## Requirements
-
-- [Claude Code](https://docs.anthropic.com/claude-code) CLI
-- [Antigravity Proxy](https://github.com/badrisnarayanan/antigravity-claude-proxy) (Gemini 모델용)
-- [Codex CLI](https://github.com/openai/codex) (논리적 추론용)
+---
 
 ## Installation
 
-### Prerequisites
+### 1. Add marketplace & install
 
 ```bash
-# 1. Antigravity Proxy 설치 및 계정 추가
-npm install -g antigravity-claude-proxy@latest
-antigravity-claude-proxy accounts add
-
-# 2. Codex CLI 설치
-npm install -g @openai/codex
-
-# 3. Codex MCP 서버 등록
-claude mcp add codex-shell -- npx -y @openai/codex-shell-tool-mcp
+claude plugin marketplace add https://github.com/rhkdguskim/mannung-agent
+claude plugin install mannung-agent
 ```
 
-### Plugin Installation
+### 2. Run setup wizard
+
+Restart Claude Code, then:
+
+```
+/mannung-agent:setup
+```
+
+The wizard asks which backends to configure and guides you through MCP installation and authentication step-by-step.
+
+### 3. Done!
+
+```
+/mannung-agent:status    # Check what's ready
+```
+
+---
+
+## Quick Start
 
 ```bash
-/plugin marketplace add https://github.com/rhkdguskim/claude-model-router
-/plugin install claude-model-router
-/claude-model-router:router-setup
+# Auto-route (keywords detected automatically)
+/route optimize this sorting algorithm
+/route React 로그인 폼 만들어줘
+
+# Vibe coding (fully autonomous)
+/vibe add user authentication
+/vibe 대충 만들어줘
+
+# Explicit model selection
+/route:codex debug this race condition
+/route:gemini-pro explore the entire codebase
+
+# Autopilot (goal-driven, runs until complete)
+/autopilot build a REST API for user management
+/autopilot 로그인 시스템 끝까지 완성해줘
+
+# Parallel execution (multiple models simultaneously)
+/parallel analyze codebase (structure + logic + security)
+
+# Diagnostics & config
+/doctor                    # Check all backend connections
+/config                    # Manage API keys & MCP settings
+
+# Routing modes
+/route --cost fix this typo        # cheapest model
+/route --quality security audit    # best model
+/route --speed quick CSS fix       # fastest model
 ```
+
+---
 
 ## Commands
 
+### Core
+
 | Command | Description |
 |---------|-------------|
-| `/claude-model-router:router-setup` | 초기 설정 및 프록시 시작 |
-| `/claude-model-router:route` | 작업 라우팅 (자동 모델 선택) |
-| `/claude-model-router:router-status` | 현재 상태 및 모델 쿼터 확인 |
+| `/route <task>` | Auto-route to optimal model |
+| `/autopilot <goal>` | Goal-driven persistent execution (chains skills until done) |
+| `/vibe <idea>` | Fully autonomous vibe coding |
+| `/parallel <task>` | Multi-agent parallel execution |
+| `/plan <task>` | Implementation planning (read-only) |
+| `/review` | Multi-perspective code review |
 
-## Routing Rules
+### Development
 
-### 자동 감지 키워드
+| Command | Description |
+|---------|-------------|
+| `/explore <query>` | Deep codebase exploration |
+| `/frontend <task>` | UI/UX development |
+| `/refactor` | Intelligent refactoring |
+| `/tdd <feature>` | Test-driven development |
+| `/deep <topic>` | Root cause / security audit |
+| `/quick <fix>` | Fast simple tasks |
+| `/doc <topic>` | Documentation generation |
 
-**Gemini Pro (파일 탐색)**
-- `search`, `find`, `grep`, `glob`, `탐색`, `검색`, `찾아`, `파일`
+### Multi-Model
 
-**Gemini Flash (Frontend)**
-- `react`, `vue`, `angular`, `css`, `html`, `component`, `ui`, `ux`, `frontend`, `프론트엔드`, `컴포넌트`, `스타일`
+| Command | Description |
+|---------|-------------|
+| `/multi-plan <task>` | Get plans from multiple models |
+| `/multi-execute` | Execute approved multi-model plan |
 
-**Codex (논리적 추론)**
-- `algorithm`, `optimize`, `debug`, `logic`, `math`, `알고리즘`, `최적화`, `디버깅`, `로직`, `수학`, `추론`
+### System
 
-## Configuration
+| Command | Description |
+|---------|-------------|
+| `/setup` | Interactive setup wizard |
+| `/status` | Backend health check |
+| `/doctor` | Verify all backend connections |
+| `/config` | Manage API keys & MCP settings |
 
-`~/.claude-model-router/config.json`:
+---
 
-```json
-{
-  "defaultModel": "gemini-flash",
-  "antigravityPort": 8080,
-  "routing": {
-    "exploration": "gemini-3-pro-high",
-    "frontend": "gemini-3-flash",
-    "reasoning": "codex"
-  }
-}
+## Model Backends
+
+| Backend | Models | Setup |
+|---------|--------|-------|
+| **antigravity-gemini** MCP | Gemini Pro, Gemini Flash | `claude mcp add antigravity-gemini -- <cmd>` |
+| **codex-shell** MCP | OpenAI Codex | `claude mcp add codex-shell -- npx -y @openai/codex-shell-tool-mcp` |
+| **Z.AI** API | GLM-4.7, GLM-4.5-Air | Set `ZHIPU_API_KEY` ([subscribe](https://z.ai/subscribe)) |
+| **Claude** | Opus, Sonnet, Haiku | Always available (native) |
+
+---
+
+## Routing Modes
+
+| Mode | Flag | Strategy |
+|------|------|----------|
+| Balanced | `--balanced` (default) | Right model for the right task |
+| Cost | `--cost` | Cheapest model first |
+| Quality | `--quality` | Best model first |
+| Speed | `--speed` | Fastest model first |
+| Vibe | `/vibe` | Fully autonomous |
+
+---
+
+## Architecture
+
 ```
+┌─────────────────────────────────────────────────────────┐
+│                   mannung-agent v2.0                    │
+├─────────────────────────────────────────────────────────┤
+│                                                         │
+│  18 Skills   11 Agents   18 Commands   5 Modes         │
+│                                                         │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐  │
+│  │Gemini Pro│ │Gem. Flash│ │  Codex   │ │ GLM-4.7  │  │
+│  │  (MCP)   │ │  (MCP)   │ │  (MCP)   │ │ (Z.AI)   │  │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘  │
+│                                                         │
+│  Fallback: Claude (native session)                     │
+│                                                         │
+│  Hooks: SessionStart | PreToolUse | PostToolUse | Stop │
+│  Real-time routing display on every task delegation    │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Agents
+
+| Agent | Role | Model |
+|-------|------|-------|
+| explorer | Codebase navigation | Gemini Pro |
+| frontend-dev | UI/UX development | Gemini Flash |
+| reasoner | Complex logic | Codex |
+| planner | Strategic planning | GLM-4.7 |
+| reviewer | Code quality | Codex |
+| refactorer | Code restructuring | Codex |
+| tdd-guide | Test-driven development | Codex |
+| architect | System design | Claude Opus |
+| orchestrator | Multi-model coordination | Claude |
+| vibe-coder | Autonomous building | Auto-select |
+| autopilot | Goal-driven persistent execution | Auto (chained) |
+
+### Cross-Platform
+
+- macOS, Linux, Windows supported
+- Hook scripts use Node.js (no bash dependency)
+- MCP-based model access (no proxy servers needed)
+
+---
 
 ## License
 

@@ -1,24 +1,35 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "claude-model-router",
-  "description": "Intelligent multi-model routing for Claude Code (Antigravity + Codex)",
+  "name": "mannung-agent",
+  "description": "All-Purpose AI Agent - Intelligent multi-model routing for development",
   "owner": {
     "name": "rhkdguskim",
     "email": "rhkdguskim1@gmail.com"
   },
   "plugins": [
     {
-      "name": "claude-model-router",
-      "description": "Automatic task-based model routing - Gemini Pro for exploration, Gemini Flash for frontend, Codex for reasoning",
-      "version": "1.0.0",
+      "name": "mannung-agent",
+      "description": "Multi-model all-purpose development agent: Gemini Pro (exploration), Gemini Flash (frontend), Codex (reasoning), GLM-4.7 (cost-effective), Claude (fallback)",
+      "version": "2.0.0",
       "author": {
         "name": "rhkdguskim",
         "email": "rhkdguskim1@gmail.com"
       },
       "source": "./",
-      "category": "productivity",
-      "homepage": "https://github.com/rhkdguskim/claude-model-router",
-      "tags": ["model-routing", "antigravity", "codex", "gemini", "multi-model"]
+      "category": "workflow",
+      "homepage": "https://github.com/rhkdguskim/mannung-agent",
+      "repository": "https://github.com/rhkdguskim/mannung-agent",
+      "tags": [
+        "multi-model",
+        "model-routing",
+        "antigravity",
+        "codex",
+        "gemini",
+        "glm",
+        "z-ai",
+        "vibe-coding",
+        "all-purpose"
+      ]
     }
   ]
 }

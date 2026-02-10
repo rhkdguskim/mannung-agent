@@ -1,20 +1,39 @@
 {
-  "name": "claude-model-router",
-  "version": "1.0.0",
-  "description": "Intelligent multi-model routing for Claude Code (Antigravity + Codex)",
+  "name": "mannung-agent",
+  "version": "2.0.0",
+  "description": "All-Purpose AI Agent - Multi-model routing plugin for Claude Code (Antigravity + Codex + Z.AI GLM)",
   "author": {
-    "name": "rhkdguskim"
+    "name": "rhkdguskim",
+    "url": "https://github.com/rhkdguskim"
   },
-  "repository": "https://github.com/rhkdguskim/claude-model-router",
-  "homepage": "https://github.com/rhkdguskim/claude-model-router",
+  "repository": "https://github.com/rhkdguskim/mannung-agent",
+  "homepage": "https://github.com/rhkdguskim/mannung-agent",
   "license": "MIT",
   "keywords": [
     "claude-code",
     "plugin",
+    "multi-model",
     "model-routing",
     "antigravity",
     "codex",
-    "gemini"
+    "gemini",
+    "glm",
+    "z-ai",
+    "all-purpose",
+    "mannung-agent"
   ],
-  "skills": "./skills/"
+  "skills": ["./skills/", "./commands/"],
+  "agents": [
+    "./agents/explorer.md",
+    "./agents/frontend-dev.md",
+    "./agents/reasoner.md",
+    "./agents/planner.md",
+    "./agents/reviewer.md",
+    "./agents/refactorer.md",
+    "./agents/tdd-guide.md",
+    "./agents/architect.md",
+    "./agents/orchestrator.md",
+    "./agents/vibe-coder.md",
+    "./agents/autopilot.md"
+  ]
 }

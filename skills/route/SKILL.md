@@ -1,36 +1,39 @@
 ---
 name: route
-description: Route a task to the appropriate AI model based on task type
+description: "Auto-route any task to the optimal AI model. Use when: user says 'route:', wants model routing, or you need to delegate to a specific backend. Supports explicit model selection (route:codex, route:gemini-pro, route:glm) and auto-detection via keywords."
 ---
 
-# Route Task
+# Route — Intelligent Task Router
 
-Intelligently route tasks to the optimal AI model.
+Route any development task to the optimal AI model backend.
 
 ## Usage Patterns
 
-The user can invoke this skill in several ways:
-
-1. **Auto-routing**: `route: <task>` - Automatically detect task type
-2. **Explicit model**: `route:gemini-pro <task>` or `route:codex <task>`
-3. **Direct invoke**: `/claude-model-router:route <task>`
+1. **Auto-routing**: `route: <task>` — detect task type and route automatically
+2. **Explicit model**: `route:gemini-pro <task>`, `route:codex <task>`, `route:glm <task>`
+3. **With mode**: `route --cost <task>`, `route --quality <task>`, `route --speed <task>`
 
 ## Step 1: Parse Input
 
-Extract the task and any explicit model specification from the user's input.
+Extract task description and check for explicit model specification.
 
-If input contains `route:gemini-pro`, `route:gemini-flash`, or `route:codex`:
-- Extract the specified model
-- Set EXPLICIT_MODEL = true
+If input contains explicit model tag:
+- `route:gemini-pro` → Gemini 3 Pro via antigravity-gemini MCP
+- `route:gemini-flash` → Gemini 3 Flash via antigravity-gemini MCP
+- `route:codex` → OpenAI Codex via MCP
+- `route:glm` → GLM-4.7 via Z.AI
+- `route:glm-air` → GLM-4.5-Air via Z.AI
 
-Otherwise:
-- Set EXPLICIT_MODEL = false
-- Proceed to auto-detection
+Check for mode flags:
+- `--cost` → Cost mode (cheapest first)
+- `--quality` → Quality mode (best first)
+- `--speed` → Speed mode (fastest first)
+- `--balanced` → Balanced mode (default)
 
 ## Step 2: Load Configuration
 
 ```bash
-CONFIG_FILE="$HOME/.claude-model-router/config.json"
+CONFIG_FILE="$HOME/.mannung-agent/config.json"
 if [ -f "$CONFIG_FILE" ]; then
   cat "$CONFIG_FILE"
 else
@@ -38,105 +41,68 @@ else
 fi
 ```
 
-If CONFIG_NOT_FOUND:
-- Inform user to run `/claude-model-router:router-setup` first
-- Stop execution
+If CONFIG_NOT_FOUND: inform user to run `/mannung-agent:setup` first.
 
-## Step 3: Auto-Detect Task Type (if EXPLICIT_MODEL = false)
+## Step 3: Auto-Detect Task Type
 
-Analyze the task description for keywords:
+If no explicit model specified, analyze task description against keyword matrix:
 
-### Exploration Keywords (→ Gemini Pro)
-- English: search, find, grep, glob, explore, codebase, file, directory, where, locate, scan
-- Korean: 탐색, 검색, 찾아, 파일, 디렉토리, 코드베이스, 어디, 위치
+**Detection Priority (highest to lowest):**
+1. Security keywords detected → Codex (CRITICAL — never downgrade)
+2. Reasoning keywords detected → Codex (weight 3)
+3. Deep analysis keywords detected → Codex / GLM-4.7 (weight 2.5)
+4. Exploration keywords detected → Gemini Pro (weight 2)
+5. Frontend keywords detected → Gemini Flash (weight 2)
+6. Review keywords detected → Codex (weight 2)
+7. Refactoring keywords detected → Codex (weight 2)
+8. TDD keywords detected → Codex (weight 2)
+9. Planning keywords detected → GLM-4.7 (weight 1.5)
+10. Documentation keywords detected → GLM-4.7 (weight 1.5)
+11. Quick keywords detected → Gemini Flash / GLM-4.5-Air (weight 1)
+12. No match → Default based on mode
 
-### Frontend Keywords (→ Gemini Flash)
-- English: react, vue, angular, svelte, next, nuxt, css, scss, sass, html, jsx, tsx, component, ui, ux, frontend, style, layout, responsive, animation, tailwind
-- Korean: 프론트엔드, 컴포넌트, 스타일, 레이아웃, 반응형, 애니메이션
-
-### Reasoning Keywords (→ Codex)
-- English: algorithm, optimize, performance, debug, logic, math, complex, reasoning, proof, analyze, refactor, architecture, design pattern, data structure
-- Korean: 알고리즘, 최적화, 성능, 디버깅, 로직, 수학, 복잡한, 추론, 증명, 분석, 리팩토링, 아키텍처
-
-### Detection Priority
-1. If reasoning keywords found → Codex
-2. If exploration keywords found → Gemini Pro
-3. If frontend keywords found → Gemini Flash
-4. Default → Gemini Flash
+**Mode-based defaults:**
+- Cost → GLM-4.5-Air
+- Quality → Claude Opus (current session)
+- Speed → Gemini Flash
+- Balanced → Gemini Flash
 
 ## Step 4: Check Model Availability
 
-### For Gemini Models (via Antigravity):
-
+### antigravity-gemini MCP (Gemini models)
 ```bash
-HEALTH=$(curl -s http://localhost:8080/health 2>/dev/null)
-if [ -z "$HEALTH" ]; then
-  echo "ANTIGRAVITY_NOT_RUNNING"
-else
-  echo "$HEALTH" | jq -r '.accounts[0].models["gemini-3-pro-high"].remaining // "unknown"'
-fi
+claude mcp list 2>/dev/null | grep -q antigravity-gemini && echo "AVAILABLE" || echo "UNAVAILABLE"
 ```
 
-If ANTIGRAVITY_NOT_RUNNING:
-- Warn user: "Antigravity proxy not running. Start with: `antigravity-claude-proxy start`"
-- Fall back to Codex if available, otherwise abort
-
-### For Codex:
-
+### codex-shell MCP (Codex)
 ```bash
-claude mcp list 2>/dev/null | grep -q codex && echo "CODEX_AVAILABLE" || echo "CODEX_NOT_AVAILABLE"
+claude mcp list 2>/dev/null | grep -q codex && echo "AVAILABLE" || echo "UNAVAILABLE"
 ```
 
-If CODEX_NOT_AVAILABLE and Codex was selected:
-- Fall back to Gemini Flash
-- Warn user about fallback
-
-## Step 5: Execute Task with Selected Model
-
-### If Gemini Model Selected:
-
-Set environment and inform user which model is being used:
-
-```
-Selected model: gemini-3-pro-high (via Antigravity)
-Reason: Task involves file exploration/search
-
-Executing task...
+### Z.AI API (GLM models)
+```bash
+[ -n "$ZHIPU_API_KEY" ] && echo "API_KEY_SET" || echo "UNAVAILABLE"
 ```
 
-Then use the Task tool with the appropriate prompt, instructing the subagent to use the Antigravity proxy:
+If selected model unavailable → follow fallback chain from core/FALLBACKS.md.
 
+## Step 5: Execute with Selected Model
+
+Report the routing decision:
 ```
-ANTHROPIC_BASE_URL=http://localhost:8080
-Model: gemini-3-pro-high
-Task: <user's task>
-```
-
-### If Codex Selected:
-
-```
-Selected model: Codex (via MCP)
-Reason: Task involves complex reasoning/algorithms
-
-Executing task...
+Model: [selected model] ([backend])
+Route: [task category]
+Reason: [why this model was selected]
+Fallback: [next in chain if this fails]
 ```
 
-Use the Codex MCP tools (codex-shell) to execute the task.
+Then execute the task with the appropriate agent and model backend.
 
 ## Step 6: Report Result
 
-After task completion, report:
-
 ```
-Task completed using: <model>
-Route type: <exploration|frontend|reasoning|default>
-
-[Result summary]
+Task completed.
+Model used: [model name]
+Route type: [category]
+Backend: [Antigravity/Codex MCP/Z.AI/Claude]
 ```
-
-## Fallback Chain
-
-If primary model unavailable:
-1. Codex unavailable → Gemini Pro → Gemini Flash
-2. Gemini unavailable → Codex → Claude (current session)
-3. All unavailable → Use current Claude session with warning
