@@ -1,7 +1,7 @@
-# mannung-agent (만능 에이전트)
+# mannung-agent
 
 > All-Purpose AI Development Agent for Claude Code
-> 모든 개발 작업을 최적의 AI 모델로 자동 라우팅하는 만능 개발 에이전트
+> Automatically routes every development task to the optimal AI model
 
 ```
 ┌─────────────────────────────────────────┐
@@ -16,17 +16,17 @@
 
 ## What It Does
 
-하나의 작업을 입력하면, 자동으로 최적의 AI 모델을 선택해서 실행합니다.
+Give it any task — it picks the best AI model automatically.
 
 | You Say | Model Used | Why |
 |---------|-----------|-----|
-| "코드베이스 분석해줘" | Gemini Pro | 1M context window |
-| "React 컴포넌트 만들어줘" | Gemini Flash | Fast UI iteration |
-| "알고리즘 최적화해줘" | Codex | Best reasoning |
-| "구현 계획 세워줘" | GLM-4.7 | 128K output, cost-effective |
-| "오타 고쳐줘" | Gemini Flash | Fastest response |
-| "대충 만들어줘" | Auto-select | Vibe mode |
-| "끝까지 완성해줘" | Auto (chained) | Autopilot mode |
+| "analyze the codebase" | Gemini Pro | 1M context window |
+| "build a React component" | Gemini Flash | Fast UI iteration |
+| "optimize this algorithm" | Codex | Best reasoning |
+| "create an implementation plan" | GLM-4.7 | 128K output, cost-effective |
+| "fix this typo" | Gemini Flash | Fastest response |
+| "just make it work" | Auto-select | Vibe mode |
+| "build this feature end to end" | Auto (chained) | Autopilot mode |
 
 Real-time routing display:
 ```
@@ -36,18 +36,6 @@ Real-time routing display:
 │ Model:   Codex                          │
 │ Backend: codex-shell MCP                │
 │ Task:    Optimize algorithm             │
-└─────────────────────────────────────────┘
-```
-
-Parallel execution:
-```
-┌─────────────────────────────────────────┐
-│ mannung-agent routing [PARALLEL]       │
-├─────────────────────────────────────────┤
-│ Model:   Gemini Pro                     │
-│ Backend: antigravity-gemini MCP         │
-│ Task:    Structure analysis             │
-│ Mode:    Background (parallel)          │
 └─────────────────────────────────────────┘
 ```
 
@@ -76,6 +64,7 @@ The wizard asks which backends to configure and guides you through MCP installat
 
 ```
 /mannung-agent:status    # Check what's ready
+/mannung-agent:doctor    # Verify all connections
 ```
 
 ---
@@ -85,22 +74,19 @@ The wizard asks which backends to configure and guides you through MCP installat
 ```bash
 # Auto-route (keywords detected automatically)
 /route optimize this sorting algorithm
-/route React 로그인 폼 만들어줘
+/route build a login form with React
+
+# Autopilot (goal-driven, runs until complete)
+/autopilot build a REST API for user management
+/autopilot implement full authentication system
 
 # Vibe coding (fully autonomous)
 /vibe add user authentication
-/vibe 대충 만들어줘
+/vibe just make it work
 
 # Explicit model selection
 /route:codex debug this race condition
 /route:gemini-pro explore the entire codebase
-
-# Autopilot (goal-driven, runs until complete)
-/autopilot build a REST API for user management
-/autopilot 로그인 시스템 끝까지 완성해줘
-
-# Parallel execution (multiple models simultaneously)
-/parallel analyze codebase (structure + logic + security)
 
 # Diagnostics & config
 /doctor                    # Check all backend connections
@@ -123,7 +109,6 @@ The wizard asks which backends to configure and guides you through MCP installat
 | `/route <task>` | Auto-route to optimal model |
 | `/autopilot <goal>` | Goal-driven persistent execution (chains skills until done) |
 | `/vibe <idea>` | Fully autonomous vibe coding |
-| `/parallel <task>` | Multi-agent parallel execution |
 | `/plan <task>` | Implementation planning (read-only) |
 | `/review` | Multi-perspective code review |
 
@@ -139,13 +124,6 @@ The wizard asks which backends to configure and guides you through MCP installat
 | `/quick <fix>` | Fast simple tasks |
 | `/doc <topic>` | Documentation generation |
 
-### Multi-Model
-
-| Command | Description |
-|---------|-------------|
-| `/multi-plan <task>` | Get plans from multiple models |
-| `/multi-execute` | Execute approved multi-model plan |
-
 ### System
 
 | Command | Description |
@@ -154,6 +132,7 @@ The wizard asks which backends to configure and guides you through MCP installat
 | `/status` | Backend health check |
 | `/doctor` | Verify all backend connections |
 | `/config` | Manage API keys & MCP settings |
+| `/multi-plan <task>` | Get plans from multiple models |
 
 ---
 
@@ -187,7 +166,7 @@ The wizard asks which backends to configure and guides you through MCP installat
 │                   mannung-agent v2.0                    │
 ├─────────────────────────────────────────────────────────┤
 │                                                         │
-│  18 Skills   11 Agents   18 Commands   5 Modes         │
+│  17 Skills   11 Agents   16 Commands   5 Modes         │
 │                                                         │
 │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐  │
 │  │Gemini Pro│ │Gem. Flash│ │  Codex   │ │ GLM-4.7  │  │

@@ -1,6 +1,6 @@
 ---
 name: frontend
-description: "Fast iterative frontend development with UI/UX focus. Use when: building React/Vue/Svelte components, styling with CSS/Tailwind, responsive layouts, animations, or any UI work. Keywords: react, vue, css, component, ui, ux, frontend, style, layout, 프론트엔드, 컴포넌트, 스타일"
+description: "Fast iterative frontend development with UI/UX focus. Use when: building React/Vue/Svelte components, styling with CSS/Tailwind, responsive layouts, animations, or any UI work. Keywords: react, vue, css, component, ui, ux, frontend, style, layout"
 ---
 
 # Frontend — UI/UX Development Specialist
@@ -19,7 +19,6 @@ Fallback: GLM-4.5-Air → Claude Haiku → Claude
 - Animation and transition work
 - Accessibility improvements
 - Frontend framework work (React, Vue, Svelte, Angular, Next.js)
-- 프론트엔드 개발, 컴포넌트 작업, 스타일링
 
 ## Design Principles
 

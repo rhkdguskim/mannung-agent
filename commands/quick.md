@@ -10,7 +10,7 @@ Minimal changes with minimal overhead.
 ```
 /quick fix typo in README
 /quick rename getUserData to fetchUserData
-/quick 오타 수정
+/quick fix the typo
 ```
 
 ## Behavior

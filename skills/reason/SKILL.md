@@ -1,6 +1,6 @@
 ---
 name: reason
-description: "Complex algorithmic reasoning and deep debugging. Use when: designing algorithms, optimizing performance, debugging complex issues, analyzing concurrency, or solving mathematical problems. Keywords: algorithm, optimize, debug, logic, math, complex, reasoning, 알고리즘, 최적화, 디버깅, 로직, 수학"
+description: "Complex algorithmic reasoning and deep debugging. Use when: designing algorithms, optimizing performance, debugging complex issues, analyzing concurrency, or solving mathematical problems. Keywords: algorithm, optimize, debug, logic, math, complex, reasoning"
 ---
 
 # Reason — Complex Logic Engine
@@ -19,7 +19,6 @@ Fallback: GLM-4.7 → Claude Opus → Claude
 - Mathematical computation or proof
 - Design pattern application
 - Concurrency and threading issues
-- 알고리즘 설계, 복잡한 디버깅, 성능 최적화
 
 ## Reasoning Protocol
 

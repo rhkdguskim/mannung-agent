@@ -1,5 +1,5 @@
 ---
-description: "Fully autonomous vibe coding mode. Give a rough idea and the agent handles everything: architecture, model selection, implementation, testing. For when you want to say 'just build it' or '대충 만들어줘'."
+description: "Fully autonomous vibe coding mode. Give a rough idea and the agent handles everything: architecture, model selection, implementation, testing. For when you want to say 'just build it'."
 ---
 
 # /vibe — Autonomous Development
@@ -11,7 +11,7 @@ Interpret user intent and build autonomously.
 /vibe <rough idea or description>
 /vibe make it look better
 /vibe add user authentication
-/vibe 이거 좀 고쳐줘
+/vibe fix this for me
 ```
 
 ## Behavior

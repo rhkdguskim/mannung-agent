@@ -1,6 +1,6 @@
 ---
 name: plan
-description: "Strategic implementation planning with task breakdown and risk assessment. Use when: planning features, creating roadmaps, breaking down complex tasks, estimating effort, or designing implementation strategies. Keywords: plan, design, strategy, roadmap, estimate, 계획, 설계, 전략"
+description: "Strategic implementation planning with task breakdown and risk assessment. Use when: planning features, creating roadmaps, breaking down complex tasks, estimating effort, or designing implementation strategies. Keywords: plan, design, strategy, roadmap, estimate"
 ---
 
 # Plan — Strategic Implementation Planner
@@ -18,7 +18,6 @@ Fallback: Gemini Pro → Claude Opus → Claude
 - Creating development roadmaps
 - Estimating effort and timelines
 - Designing migration strategies
-- 기능 구현 계획, 작업 분해, 로드맵 작성
 
 ## Planning Protocol
 

@@ -1,6 +1,6 @@
 ---
 name: vibe
-description: "Fully autonomous vibe coding mode. Use when: user gives a rough idea and wants you to figure out everything autonomously — architecture, model selection, implementation, testing. Keywords: vibe, 대충, 알아서, 바이브, just do it, make it work, 만들어줘"
+description: "Fully autonomous vibe coding mode. Use when: user gives a rough idea and wants you to figure out everything autonomously — architecture, model selection, implementation, testing. Keywords: vibe, just do it, make it work, build it"
 ---
 
 # Vibe — Autonomous Development Mode
@@ -12,8 +12,8 @@ Fully autonomous mode: interpret user intent, pick models, build everything.
 
 ## When to Activate
 
-- User gives vague/rough instructions ("대충 만들어줘", "이거 좀 해줘")
-- User says "vibe", "바이브", "알아서 해줘"
+- User gives vague/rough instructions ("just build it", "make something for this")
+- User says "vibe", "just do it", "make it work"
 - User describes what they want without specifying how
 - User wants end-to-end feature delivery
 
@@ -54,9 +54,9 @@ SHIP (Present result)
 | "it's slow" | Performance issue | Reasoner (Codex) + profiling |
 | "add auth" | Full auth system | Plan → Implement → Test |
 | "fix it" | Bug fix | Explore → Debug → Fix → Test |
-| "이거 좀 고쳐줘" | Fix this | Read context → fix comprehensively |
-| "대충 만들어줘" | Build MVP | Minimal viable implementation |
-| "리팩토링 해줘" | Restructure | Refactorer (Codex) |
+| "fix this" | Fix this | Read context → fix comprehensively |
+| "just build it" | Build MVP | Minimal viable implementation |
+| "refactor this" | Restructure | Refactorer (Codex) |
 
 ## Quality Guardrails (Even in Vibe Mode)
 

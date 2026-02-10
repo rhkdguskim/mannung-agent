@@ -17,7 +17,7 @@ Activate fully autonomous development mode.
 ## Examples
 ```
 /autopilot build a REST API for user management
-/autopilot 로그인 시스템 구현해줘
+/autopilot implement a login system
 /autopilot refactor the authentication module
 /autopilot fix all failing tests
 /autopilot add dark mode support

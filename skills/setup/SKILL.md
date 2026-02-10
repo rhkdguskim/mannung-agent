@@ -1,12 +1,12 @@
 ---
 name: setup
-description: "Interactive installation wizard for 만능 에이전트. Use when: first-time setup, configuring backends, adding MCP servers, setting up API keys, or troubleshooting configuration. Guides user through each backend step-by-step."
+description: "Interactive installation wizard for mannung-agent. Use when: first-time setup, configuring backends, adding MCP servers, setting up API keys, or troubleshooting configuration. Guides user through each backend step-by-step."
 ---
 
 # Setup — Interactive Installation Wizard
 
 Interactive step-by-step setup for all model backends.
-사용자와 대화하며 단계별로 MCP 설정 및 인증을 진행합니다.
+Guides the user through MCP configuration and authentication step by step.
 
 ## Overview
 
@@ -15,7 +15,7 @@ This wizard checks each backend, asks the user if they want to configure it, and
 ## Step 1: Welcome & Backend Selection
 
 Use AskUserQuestion:
-- Question: "만능 에이전트에 오신 것을 환영합니다! 어떤 백엔드를 설정하시겠습니까?"
+- Question: "Welcome to mannung-agent! Which backends would you like to configure?"
 - Header: "Backends"
 - Options (multiSelect: true):
   1. "Gemini (antigravity-gemini)" — Gemini Pro/Flash models for exploration and frontend
@@ -35,13 +35,13 @@ claude mcp list 2>/dev/null | grep antigravity-gemini
 ### 2b. If NOT configured, guide setup:
 
 Use AskUserQuestion:
-- Question: "antigravity-gemini MCP를 어떻게 설치하셨나요? 설치 명령어를 선택해주세요."
+- Question: "How did you install antigravity-gemini MCP? Please select the install method."
 - Header: "Gemini MCP"
 - Options:
-  1. "npm global install" — `npm install -g antigravity-gemini` 후 MCP 추가
-  2. "npx (no install)" — npx로 바로 실행
-  3. "Already installed" — 이미 설치됨, MCP 등록만 필요
-  4. "Skip" — Gemini 모델 사용하지 않음
+  1. "npm global install" — Run `npm install -g antigravity-gemini` then add MCP
+  2. "npx (no install)" — Run directly via npx
+  3. "Already installed" — Already installed, just need MCP registration
+  4. "Skip" — Do not use Gemini models
 
 Based on answer, execute:
 ```bash
@@ -57,12 +57,12 @@ claude mcp list 2>/dev/null | grep antigravity-gemini
 
 ### 2c. Verify Gemini access:
 Use AskUserQuestion:
-- Question: "Antigravity에 Google 계정이 연결되어 있나요?"
+- Question: "Is your Google account connected to Antigravity?"
 - Header: "Auth"
 - Options:
-  1. "Yes, configured" — 이미 설정됨
-  2. "Need to add account" — 계정 추가 필요
-  3. "Skip authentication" — 나중에 설정
+  1. "Yes, configured" — Already configured
+  2. "Need to add account" — Need to add account
+  3. "Skip authentication" — Configure later
 
 If "Need to add account":
 ```bash
@@ -86,16 +86,16 @@ claude mcp list 2>/dev/null | grep codex
 ### 3b. If NOT configured:
 
 Use AskUserQuestion:
-- Question: "OpenAI Codex MCP를 설정합니다. OpenAI API 키가 있으신가요?"
+- Question: "Setting up OpenAI Codex MCP. Do you have an OpenAI API key?"
 - Header: "Codex Auth"
 - Options:
-  1. "Yes, OPENAI_API_KEY is set" — 환경변수에 키가 설정됨
-  2. "I have a key but need to set it" — 키는 있지만 설정 필요
-  3. "No key yet" — 아직 키 없음
-  4. "Skip" — Codex 사용하지 않음
+  1. "Yes, OPENAI_API_KEY is set" — Key is set in environment variables
+  2. "I have a key but need to set it" — Have a key but need to configure it
+  3. "No key yet" — No key available yet
+  4. "Skip" — Do not use Codex
 
 If "I have a key but need to set it":
-- Instruct user: "OPENAI_API_KEY를 환경변수로 설정해주세요."
+- Instruct user: "Please set OPENAI_API_KEY as an environment variable."
 - Guide: Add to `~/.zshrc` or `~/.bashrc`: `export OPENAI_API_KEY=your-key-here`
 
 If API key is available:
@@ -120,20 +120,20 @@ echo ${ZHIPU_API_KEY:+SET}${ZHIPU_API_KEY:-NOT_SET}
 ### 4b. If NOT configured:
 
 Use AskUserQuestion:
-- Question: "Z.AI Coding Plan API 키가 있으신가요? (z.ai/subscribe에서 구독)"
+- Question: "Do you have a Z.AI Coding Plan API key? (Subscribe at z.ai/subscribe)"
 - Header: "Z.AI Auth"
 - Options:
-  1. "Yes, I have an API key" — 키가 있음
-  2. "No, I need to subscribe first" — 먼저 구독 필요
-  3. "Skip" — GLM 모델 사용하지 않음
+  1. "Yes, I have an API key" — Key is available
+  2. "No, I need to subscribe first" — Need to subscribe first
+  3. "Skip" — Do not use GLM models
 
 If "Yes, I have an API key":
 - Instruct user to set the environment variable:
 ```
-다음을 ~/.zshrc 또는 ~/.bashrc에 추가하세요:
+Add the following to ~/.zshrc or ~/.bashrc:
 export ZHIPU_API_KEY=your-api-key-here
 
-그리고 Claude Code settings에도 추가합니다:
+Also add it to Claude Code settings:
 ```
 
 Guide user to add to `~/.claude/settings.json`:
@@ -146,17 +146,17 @@ Guide user to add to `~/.claude/settings.json`:
 ```
 
 If "No, I need to subscribe":
-- Inform: "z.ai/subscribe에서 Coding Plan을 구독하세요. Lite 플랜은 월 $3부터 시작합니다."
+- Inform: "Subscribe to a Coding Plan at z.ai/subscribe. The Lite plan starts at $3/month."
 
 ### 4c. Optional: Z.AI MCP servers
 
 Use AskUserQuestion:
-- Question: "Z.AI MCP 서버도 설정하시겠습니까? (웹 검색, 웹 리더, GitHub 탐색)"
+- Question: "Would you also like to set up Z.AI MCP servers? (Web search, web reader, GitHub explorer)"
 - Header: "Z.AI MCP"
 - Options:
-  1. "Web Search + Web Reader (Recommended)" — 웹 검색과 읽기
-  2. "All Z.AI MCPs" — 웹 검색 + 리더 + Zread (GitHub)
-  3. "Skip" — MCP 서버 필요 없음
+  1. "Web Search + Web Reader (Recommended)" — Web search and reader
+  2. "All Z.AI MCPs" — Web search + reader + Zread (GitHub)
+  3. "Skip" — No MCP servers needed
 
 ## Step 5: Create Configuration
 
@@ -189,7 +189,7 @@ ENDCONFIG
 ## Step 6: Final Verification & Report
 
 ```bash
-echo "=== 만능 에이전트 v2.0 Setup Complete ==="
+echo "=== mannung-agent v2.0 Setup Complete ==="
 echo ""
 claude mcp list 2>/dev/null | grep -q antigravity-gemini && echo "  [OK] antigravity-gemini (Gemini Pro, Flash)" || echo "  [--] antigravity-gemini (not configured)"
 claude mcp list 2>/dev/null | grep -q codex && echo "  [OK] codex-shell (OpenAI Codex)" || echo "  [--] codex-shell (not configured)"
@@ -199,7 +199,7 @@ echo "  [OK] Claude (always available)"
 
 Report:
 ```
-만능 에이전트 v2.0 Setup Complete!
+mannung-agent v2.0 Setup Complete!
 
 Configured Backends: [list of OK backends]
 Available Models: [list of available models]
@@ -210,5 +210,5 @@ Quick Start:
   /mannung-agent:status           — Check backend health
   /mannung-agent:explore <query>  — Explore codebase
 
-나중에 설정을 변경하려면: /mannung-agent:setup
+To change settings later: /mannung-agent:setup
 ```

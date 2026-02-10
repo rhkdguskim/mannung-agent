@@ -6,7 +6,7 @@ description: "Diagnose and verify all model backend connections. Use when: check
 # Doctor — Backend Connectivity Diagnostics
 
 Run comprehensive health checks on all model backends.
-단순 설정 확인이 아니라 실제 연결 테스트를 수행합니다.
+Performs actual connection tests, not just configuration checks.
 
 ## What It Checks
 

@@ -1,5 +1,5 @@
 ---
-description: "Interactive setup wizard for 만능 에이전트. Guides through MCP installation, API key configuration, and authentication for all model backends."
+description: "Interactive setup wizard for the multi-model agent. Guides through MCP installation, API key configuration, and authentication for all model backends."
 ---
 
 # /setup — Installation Wizard

@@ -1,7 +1,7 @@
 # Mode: Vibe (Fully Autonomous)
 
 ## Activation
-- User says "vibe", "바이브", "알아서", or uses /vibe command
+- User says "vibe", "auto", "just do it", or uses /vibe command
 - Flag: `--vibe`
 
 ## Behavior Changes

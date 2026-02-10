@@ -11,7 +11,7 @@ Comprehensive codebase exploration.
 /explore <query>
 /explore how does authentication work?
 /explore find all API endpoints
-/explore 인증 시스템 구조 파악
+/explore understand the authentication system architecture
 ```
 
 ## Behavior

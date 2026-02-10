@@ -1,6 +1,6 @@
 ---
 name: review
-description: "Multi-perspective code review covering correctness, security, performance, and maintainability. Use when: reviewing code changes, pull requests, checking code quality, or auditing for security. Keywords: review, code review, PR, quality, security, lint, 리뷰, 코드리뷰, 품질"
+description: "Multi-perspective code review covering correctness, security, performance, and maintainability. Use when: reviewing code changes, pull requests, checking code quality, or auditing for security. Keywords: review, code review, PR, quality, security, lint"
 ---
 
 # Review — Multi-Perspective Code Review
@@ -19,7 +19,6 @@ Fallback: Claude Opus → Claude
 - Security audits
 - Code quality assessments
 - Architecture review
-- 코드 리뷰, 품질 검사, 보안 점검
 
 ## Review Dimensions
 

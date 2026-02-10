@@ -1,6 +1,6 @@
 ---
 name: explore
-description: "Deep codebase exploration and analysis using large-context models. Use when: searching files, analyzing project structure, tracing dependencies, understanding codebases, finding code patterns, or navigating large projects. Keywords: search, find, grep, explore, codebase, structure, navigate, 탐색, 검색, 찾아, 파일, 구조"
+description: "Deep codebase exploration and analysis using large-context models. Use when: searching files, analyzing project structure, tracing dependencies, understanding codebases, finding code patterns, or navigating large projects. Keywords: search, find, grep, explore, codebase, structure, navigate"
 ---
 
 # Explore — Codebase Deep Dive
@@ -18,7 +18,6 @@ Fallback: GLM-4.7 → Codex → Claude
 - User asks "where is..." or "how does X work?"
 - Task requires reading many files across the codebase
 - Dependency tracing or import graph analysis
-- 사용자가 코드 탐색, 검색, 구조 파악을 요청할 때
 
 ## Execution Flow
 

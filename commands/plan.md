@@ -10,7 +10,7 @@ Create a thorough plan before implementation.
 ```
 /plan <feature or task description>
 /plan add authentication system
-/plan 사용자 인증 시스템 추가
+/plan add user authentication system
 ```
 
 ## Behavior

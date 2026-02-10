@@ -6,7 +6,6 @@ description: "Manage model backend configuration: API keys, MCP servers, routing
 # Config — Backend Configuration Management
 
 Manage API keys, MCP servers, and routing configuration.
-API 키 변경, MCP 서버 관리, 라우팅 설정을 관리합니다.
 
 ## Operations
 
@@ -21,11 +20,11 @@ echo "ZHIPU_API_KEY: ${ZHIPU_API_KEY:+SET (${#ZHIPU_API_KEY} chars)}${ZHIPU_API_
 #### Update Z.AI API Key
 
 Use AskUserQuestion:
-- Question: "Z.AI API 키를 변경하시겠습니까?"
+- Question: "Would you like to change the Z.AI API key?"
 - Options:
-  1. "Enter new key" — 새 키 입력
-  2. "Remove key" — 키 제거
-  3. "Skip" — 변경 없음
+  1. "Enter new key" — Enter a new key
+  2. "Remove key" — Remove the key
+  3. "Skip" — No changes
 
 If "Enter new key":
 Guide user to update `~/.claude/settings.json`:
@@ -60,12 +59,12 @@ claude mcp list 2>&1
 #### Add MCP server
 
 Use AskUserQuestion:
-- Question: "어떤 MCP 서버를 추가/변경하시겠습니까?"
+- Question: "Which MCP server would you like to add or modify?"
 - Options:
   1. "antigravity-gemini" — Gemini Pro/Flash
   2. "codex-shell" — OpenAI Codex
-  3. "Z.AI web-search" — Z.AI 웹 검색 MCP
-  4. "Custom MCP" — 직접 입력
+  3. "Z.AI web-search" — Z.AI web search MCP
+  4. "Custom MCP" — Enter manually
 
 Based on selection:
 ```bash
@@ -89,24 +88,24 @@ claude mcp remove <server-name>
 #### Change routing mode
 
 Use AskUserQuestion:
-- Question: "기본 라우팅 모드를 변경하시겠습니까?"
+- Question: "Would you like to change the default routing mode?"
 - Options:
-  1. "balanced (Recommended)" — 작업별 최적 모델
-  2. "cost" — 비용 최소화
-  3. "quality" — 품질 최대화
-  4. "speed" — 속도 최대화
+  1. "balanced (Recommended)" — Optimal model per task
+  2. "cost" — Minimize cost
+  3. "quality" — Maximize quality
+  4. "speed" — Maximize speed
 
 Update `~/.mannung-agent/config.json` routing.mode field.
 
 #### Override model for task type
 
 Use AskUserQuestion:
-- Question: "특정 작업 유형의 기본 모델을 변경하시겠습니까?"
+- Question: "Would you like to change the default model for a specific task type?"
 - Options:
-  1. "exploration" — 현재: Gemini Pro
-  2. "frontend" — 현재: Gemini Flash
-  3. "reasoning" — 현재: Codex
-  4. "planning" — 현재: GLM-4.7
+  1. "exploration" — Current: Gemini Pro
+  2. "frontend" — Current: Gemini Flash
+  3. "reasoning" — Current: Codex
+  4. "planning" — Current: GLM-4.7
 
 Then ask which model to use for that task type.
 

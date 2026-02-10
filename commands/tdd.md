@@ -10,7 +10,7 @@ Disciplined TDD cycle enforcement.
 ```
 /tdd <feature description>
 /tdd add user login validation
-/tdd 로그인 검증 테스트 추가
+/tdd add login validation tests
 ```
 
 ## Behavior

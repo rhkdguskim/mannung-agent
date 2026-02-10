@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: "Test-driven development workflow with red-green-refactor cycle. Use when: writing tests, implementing TDD, improving test coverage, or setting up test infrastructure. Keywords: test, tdd, unit test, integration test, e2e, coverage, jest, pytest, 테스트, 단위테스트, 커버리지"
+description: "Test-driven development workflow with red-green-refactor cycle. Use when: writing tests, implementing TDD, improving test coverage, or setting up test infrastructure. Keywords: test, tdd, unit test, integration test, e2e, coverage, jest, pytest"
 ---
 
 # TDD — Test-Driven Development
@@ -17,7 +17,6 @@ Fallback: GLM-4.7 → Claude
 - TDD-style feature development
 - Improving test coverage
 - Setting up test infrastructure
-- 테스트 작성, TDD 개발, 커버리지 개선
 
 ## TDD Cycle
 

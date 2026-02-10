@@ -1,6 +1,6 @@
 ---
 name: doc
-description: "Documentation generation and maintenance. Use when: writing README, API docs, code comments, changelogs, tutorials, or any documentation. Keywords: document, readme, changelog, api doc, comment, explain, tutorial, guide, 문서, 리드미, 설명, 가이드"
+description: "Documentation generation and maintenance. Use when: writing README, API docs, code comments, changelogs, tutorials, or any documentation. Keywords: document, readme, changelog, api doc, comment, explain, tutorial, guide"
 ---
 
 # Doc — Documentation Specialist
@@ -19,7 +19,6 @@ Fallback: Gemini Flash → Claude
 - Changelog generation
 - Tutorial or guide writing
 - Architecture documentation
-- 문서 작성, README 업데이트, API 문서, 가이드 작성
 
 ## Documentation Protocol
 

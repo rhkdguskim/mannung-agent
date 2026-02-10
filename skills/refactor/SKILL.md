@@ -1,6 +1,6 @@
 ---
 name: refactor
-description: "Intelligent code refactoring with behavior preservation. Use when: restructuring code, extracting functions/classes, reducing duplication, applying design patterns, or cleaning up technical debt. Keywords: refactor, restructure, extract, simplify, clean, DRY, SOLID, 리팩토링, 정리, 개선"
+description: "Intelligent code refactoring with behavior preservation. Use when: restructuring code, extracting functions/classes, reducing duplication, applying design patterns, or cleaning up technical debt. Keywords: refactor, restructure, extract, simplify, clean, DRY, SOLID"
 ---
 
 # Refactor — Intelligent Code Restructuring
@@ -18,7 +18,6 @@ Fallback: GLM-4.7 → Claude Opus → Claude
 - Reducing duplication
 - Applying SOLID principles
 - Simplifying complex logic
-- 리팩토링, 코드 정리, 구조 개선
 
 ## Refactoring Protocol
 

@@ -1,6 +1,6 @@
 ---
 name: autopilot
-description: "Autonomous goal-driven development mode. Use when: user provides a high-level goal and wants fully automated execution — auto-chains explore, plan, implement, test, review skills until goal is complete. Keywords: autopilot, 자동, 오토, auto, 끝까지, 완성해, finish it, do everything, 전부 해줘, 알아서 끝까지"
+description: "Autonomous goal-driven development mode. Use when: user provides a high-level goal and wants fully automated execution — auto-chains explore, plan, implement, test, review skills until goal is complete. Keywords: autopilot, auto, finish it, do everything, build it, end to end"
 ---
 
 # Autopilot — Goal-Driven Persistent Execution
@@ -12,10 +12,10 @@ Fully autonomous mode that chains skills together and runs persistently until th
 
 ## When to Activate
 
-- User provides a high-level goal: "build a login system", "로그인 시스템 만들어줘"
-- User says "autopilot", "자동으로", "알아서 끝까지", "전부 해줘"
+- User provides a high-level goal: "build a login system"
+- User says "autopilot", "auto mode", "do everything"
 - User wants end-to-end delivery without manual intervention
-- User says "끝까지 해줘", "완성해줘", "finish it"
+- User says "finish it", "complete it"
 
 ## Execution Pipeline
 
@@ -131,19 +131,15 @@ At each phase transition, output a progress update:
 
 When ANY of these master keywords are detected, activate autopilot:
 
-| Keyword | Language | Example |
-|---------|----------|---------|
-| `autopilot` | EN | "autopilot: build a REST API" |
-| `자동` | KR | "자동으로 로그인 기능 만들어줘" |
-| `오토` | KR | "오토 파일럿으로 해줘" |
-| `끝까지` | KR | "끝까지 완성해줘" |
-| `완성해` | KR | "이 기능 완성해줘" |
-| `전부` | KR | "전부 다 해줘" |
-| `알아서 다` | KR | "알아서 다 해줘" |
-| `finish it` | EN | "finish it" |
-| `do everything` | EN | "do everything for this feature" |
-| `build it` | EN | "build it end to end" |
-| `end to end` | EN | "implement this end to end" |
+| Keyword | Example |
+|---------|---------|
+| `autopilot` | "autopilot: build a REST API" |
+| `auto mode` | "auto mode: build a login feature" |
+| `finish it` | "finish it" |
+| `do everything` | "do everything for this feature" |
+| `build it` | "build it end to end" |
+| `end to end` | "implement this end to end" |
+| `complete it` | "complete it for me" |
 
 ## Skill Chaining Matrix
 

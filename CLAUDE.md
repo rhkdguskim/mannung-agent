@@ -1,13 +1,13 @@
-# 만능 에이전트 (All-Purpose Agent)
+# mannung-agent (All-Purpose Agent)
 
 Multi-model intelligent routing plugin for Claude Code.
-모든 개발 작업을 최적의 AI 모델로 자동 라우팅하는 만능 개발 에이전트.
+Automatically routes every development task to the optimal AI model.
 
 ## Architecture
 
 ```
 ┌───────────────────────────────────────────────────────────────────┐
-│                        만능 에이전트 v2.0                          │
+│                      mannung-agent v2.0                           │
 ├───────────────────────────────────────────────────────────────────┤
 │                                                                   │
 │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────┐ │
@@ -53,9 +53,9 @@ claude mcp add codex-shell -- npx -y @openai/codex-shell-tool-mcp
 
 - **auto**: Keyword-based auto-detection (default)
 - **vibe**: Fully autonomous - agent picks everything
-- **cost**: Minimize cost (GLM-4.5-Air → Gemini Flash → others)
-- **quality**: Maximize quality (Codex → Gemini Pro → Claude Opus)
-- **speed**: Minimize latency (Gemini Flash → GLM Flash → Haiku)
+- **cost**: Minimize cost (GLM-4.5-Air -> Gemini Flash -> others)
+- **quality**: Maximize quality (Codex -> Gemini Pro -> Claude Opus)
+- **speed**: Minimize latency (Gemini Flash -> GLM Flash -> Haiku)
 - **balanced**: Balanced cost/quality/speed
 
 ## Code Generation Strategy
@@ -67,20 +67,20 @@ For implementation tasks (writing/editing code), prefer **Claude Sonnet** as the
 - Use Codex for: algorithm optimization, complex debugging, performance-critical code
 - Use Gemini Flash for: simple UI changes, CSS tweaks, quick edits
 
-### Code Generation Keywords → Sonnet (native)
-- EN: implement, create, build, write, code, generate, add feature, develop, make
-- KR: 구현, 생성, 빌드, 작성, 코드, 만들어, 기능추가, 개발
+### Code Generation Keywords -> Sonnet (native)
+implement, create, build, write, code, generate, add feature, develop, make
 
 ## Autopilot Mode
 
 **Master keyword activation**: When user provides a high-level goal with autopilot keywords, the agent autonomously chains skills and runs persistently until completion.
 
-- Trigger keywords: autopilot, 자동, 오토, 끝까지, 완성해, 전부 해줘, finish it, do everything, end to end
-- Execution: explore → plan → implement → test → review → deliver
+- Trigger keywords: autopilot, finish it, do everything, end to end, build it, complete this, start to finish
+- Execution pipeline: explore -> plan -> implement -> test -> review -> deliver
 - Self-recovery: retries on failure, uses fallback models, never stops until goal is met
+- Parallel execution: internally dispatches independent subtasks in parallel when possible
 - Progress tracking: reports phase/subtask progress at each step
 
-## Skills (18)
+## Skills (17)
 
 | Skill | Description | Default Model |
 |-------|-------------|---------------|
@@ -101,7 +101,6 @@ For implementation tasks (writing/editing code), prefer **Claude Sonnet** as the
 | `quick` | Fast simple tasks | Gemini Flash (MCP) |
 | `deep` | Deep analysis & research | Codex / GLM-4.7 |
 | `doc` | Documentation generation | GLM-4.7 |
-| `parallel` | Multi-agent parallel execution | Auto |
 
 ## Agents (11)
 
@@ -119,60 +118,70 @@ For implementation tasks (writing/editing code), prefer **Claude Sonnet** as the
 | vibe-coder | Autonomous Builder | Auto | All |
 | autopilot | Goal-Driven Executor | Auto | All |
 
-## Commands (18)
+## Commands (16)
 
 `/route`, `/autopilot`, `/vibe`, `/plan`, `/review`, `/refactor`, `/tdd`, `/explore`,
-`/quick`, `/deep`, `/doc`, `/parallel`, `/status`, `/setup`, `/doctor`,
-`/config`, `/multi-plan`, `/multi-execute`
+`/quick`, `/deep`, `/doc`, `/status`, `/setup`, `/doctor`,
+`/config`, `/multi-plan`
 
 ## Keyword Detection
 
-### Exploration → Gemini Pro (antigravity-gemini MCP)
-- EN: search, find, grep, glob, explore, codebase, file, directory, where, locate, scan, structure, tree, navigate
-- KR: 탐색, 검색, 찾아, 파일, 디렉토리, 코드베이스, 어디, 위치, 구조
+### Exploration -> Gemini Pro (antigravity-gemini MCP)
+search, find, grep, glob, explore, codebase, file, directory, where, locate, scan, structure, tree, navigate
 
-### Frontend → Gemini Flash (antigravity-gemini MCP)
-- EN: react, vue, angular, svelte, next, nuxt, css, scss, sass, html, jsx, tsx, component, ui, ux, frontend, style, layout, responsive, animation, tailwind, design
-- KR: 프론트엔드, 컴포넌트, 스타일, 레이아웃, 반응형, 애니메이션, 디자인
+### Frontend -> Gemini Flash (antigravity-gemini MCP)
+react, vue, angular, svelte, next, nuxt, css, scss, sass, html, jsx, tsx, component, ui, ux, frontend, style, layout, responsive, animation, tailwind, design
 
-### Reasoning → Codex (codex-shell MCP)
-- EN: algorithm, optimize, performance, debug, logic, math, complex, reasoning, proof, analyze, architecture, design pattern, data structure, concurrent, thread
-- KR: 알고리즘, 최적화, 성능, 디버깅, 로직, 수학, 복잡한, 추론, 증명, 분석, 아키텍처
+### Reasoning -> Codex (codex-shell MCP)
+algorithm, optimize, performance, debug, logic, math, complex, reasoning, proof, analyze, architecture, design pattern, data structure, concurrent, thread
 
-### Planning → GLM-4.7 (Z.AI API)
-- EN: plan, design, blueprint, strategy, roadmap, estimate, scope, requirement, specification
-- KR: 계획, 설계, 전략, 로드맵, 견적, 범위, 요구사항, 명세
+### Planning -> GLM-4.7 (Z.AI API)
+plan, design, blueprint, strategy, roadmap, estimate, scope, requirement, specification
 
-### Quick → Gemini Flash (antigravity-gemini MCP)
-- EN: fix, typo, rename, simple, small, quick, trivial, one-line, minor
-- KR: 수정, 오타, 이름변경, 간단한, 작은, 빠른, 사소한
+### Quick -> Gemini Flash (antigravity-gemini MCP)
+fix, typo, rename, simple, small, quick, trivial, one-line, minor
 
-### Deep → Codex (codex-shell MCP) / GLM-4.7
-- EN: deep, thorough, comprehensive, research, investigate, root cause, audit, security
-- KR: 심층, 철저한, 포괄적, 연구, 조사, 근본원인, 감사, 보안
+### Deep -> Codex (codex-shell MCP) / GLM-4.7
+deep, thorough, comprehensive, research, investigate, root cause, audit, security
 
-### Autopilot → Auto (chains all skills)
-- EN: autopilot, finish it, do everything, end to end, build it, complete this
-- KR: 자동, 오토, 끝까지, 완성해, 전부 해줘, 알아서 다 해줘
+### Autopilot -> Auto (chains all skills)
+autopilot, finish it, do everything, end to end, build it, complete this, start to finish
 
 ## Priority Rules
 
-1. **RED CRITICAL**: Security vulnerabilities → always Codex + security-reviewer
-2. **RED CRITICAL**: Data loss risk → always confirm before execution
-3. **YELLOW IMPORTANT**: Explicit model override → respect user choice
-4. **YELLOW IMPORTANT**: Reasoning keywords → Codex (highest accuracy)
-5. **GREEN RECOMMENDED**: Exploration keywords → Gemini Pro (largest context)
-6. **GREEN RECOMMENDED**: Frontend keywords → Gemini Flash (fastest)
-7. **GREEN RECOMMENDED**: Default → cost-effective model based on mode
+1. **RED CRITICAL**: Security vulnerabilities -> always Codex + security-reviewer
+2. **RED CRITICAL**: Data loss risk -> always confirm before execution
+3. **YELLOW IMPORTANT**: Explicit model override -> respect user choice
+4. **YELLOW IMPORTANT**: Reasoning keywords -> Codex (highest accuracy)
+5. **GREEN RECOMMENDED**: Exploration keywords -> Gemini Pro (largest context)
+6. **GREEN RECOMMENDED**: Frontend keywords -> Gemini Flash (fastest)
+7. **GREEN RECOMMENDED**: Default -> cost-effective model based on mode
 
 ## Fallback Chains
 
 ```
-Gemini Pro unavailable  → GLM-4.7 → Codex → Claude
-Gemini Flash unavailable → GLM-4.5-Air → Claude Haiku → Claude
-Codex unavailable       → GLM-4.7 → Claude Opus → Claude
-GLM-4.7 unavailable     → Gemini Pro → Codex → Claude
-All backends down       → Claude (current session) with warning
+Gemini Pro unavailable  -> GLM-4.7 -> Codex -> Claude
+Gemini Flash unavailable -> GLM-4.5-Air -> Claude Haiku -> Claude
+Codex unavailable       -> GLM-4.7 -> Claude Opus -> Claude
+GLM-4.7 unavailable     -> Gemini Pro -> Codex -> Claude
+All backends down       -> Claude (current session) with warning
+```
+
+## Token Optimization
+
+- **Right-size models**: Use smallest capable model per subtask
+- **Minimize context**: Load only relevant files, use Grep before Read
+- **Model escalation**: Start cheap, escalate only on failure
+- **Parallel cost trade-off**: Parallel = faster but higher total cost
+- See `core/TOKEN_OPTIMIZATION.md` for full strategy
+
+## Progress Reporting
+
+For long-running tasks (autopilot, vibe, deep), report progress:
+```
+[mannung-agent] Phase 2/5: Planning
+[mannung-agent] Subtask: 3/7 complete
+[mannung-agent] Model: Sonnet (native)
 ```
 
 ## Hooks

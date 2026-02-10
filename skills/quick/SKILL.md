@@ -1,6 +1,6 @@
 ---
 name: quick
-description: "Fast simple task handler for trivial changes. Use when: fixing typos, renaming variables, simple one-line changes, formatting, or other trivial modifications. Keywords: fix, typo, rename, simple, quick, small, trivial, minor, 수정, 오타, 간단한, 빠른"
+description: "Fast simple task handler for trivial changes. Use when: fixing typos, renaming variables, simple one-line changes, formatting, or other trivial modifications. Keywords: fix, typo, rename, simple, quick, small, trivial, minor"
 ---
 
 # Quick — Fast Simple Task Handler
@@ -19,7 +19,6 @@ Fallback: GLM-4.5-Air → Claude Haiku → Claude
 - Formatting/indentation fixes
 - Adding/removing comments
 - Simple import additions
-- 오타 수정, 간단한 변경, 포맷팅
 
 ## Execution Protocol
 

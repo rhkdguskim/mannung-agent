@@ -11,7 +11,7 @@ Precise refactoring with safety guarantees.
 /refactor path/to/file.ts     — Refactor specific file
 /refactor --extract-method     — Extract long methods
 /refactor --reduce-duplication — DRY up duplicated code
-/refactor 이 클래스 리팩토링해줘
+/refactor refactor this class
 ```
 
 ## Behavior

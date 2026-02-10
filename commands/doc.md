@@ -11,7 +11,7 @@ Create or update documentation.
 /doc generate README for this project
 /doc write API documentation
 /doc update changelog
-/doc 이 모듈 설명 문서 작성
+/doc write documentation for this module
 ```
 
 ## Behavior

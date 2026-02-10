@@ -11,7 +11,7 @@ Deep dive into complex issues.
 /deep investigate why tests fail intermittently
 /deep security audit the auth module
 /deep performance profile the API endpoints
-/deep 이 버그의 근본 원인 분석
+/deep analyze the root cause of this bug
 ```
 
 ## Behavior

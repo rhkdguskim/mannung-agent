@@ -58,8 +58,8 @@ Simple changes?             → Direct (Gemini Flash)
 | "add auth" | Full auth system — signup, login, logout, session |
 | "fix it" | Read error context, identify root cause, fix + test |
 | "like X but for Y" | Analyze X's patterns, adapt for Y's domain |
-| "이거 좀 고쳐줘" | Understand context, fix comprehensively |
-| "대충 만들어줘" | Build working MVP, skip over-engineering |
+| "just fix this" | Understand context, fix comprehensively |
+| "just throw something together" | Build working MVP, skip over-engineering |
 
 ## Quality Guardrails (Even in Vibe Mode)
 

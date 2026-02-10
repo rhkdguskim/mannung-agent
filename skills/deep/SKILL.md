@@ -1,6 +1,6 @@
 ---
 name: deep
-description: "Deep analysis and thorough investigation. Use when: investigating root causes, security auditing, comprehensive code analysis, performance profiling, or research. Keywords: deep, thorough, investigate, root cause, audit, security, research, 심층, 철저, 조사, 근본원인, 감사"
+description: "Deep analysis and thorough investigation. Use when: investigating root causes, security auditing, comprehensive code analysis, performance profiling, or research. Keywords: deep, thorough, investigate, root cause, audit, security, research"
 ---
 
 # Deep — Thorough Investigation & Analysis
@@ -19,7 +19,6 @@ Fallback: Gemini Pro → Claude Opus → Claude
 - Performance bottleneck investigation
 - Comprehensive code quality assessment
 - Technical research and feasibility studies
-- 근본원인 분석, 보안 감사, 성능 조사
 
 ## Investigation Protocol
 
