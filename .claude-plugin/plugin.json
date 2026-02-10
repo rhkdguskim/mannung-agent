@@ -23,7 +23,6 @@
     "mannung-agent"
   ],
   "skills": ["./skills/", "./commands/"],
-  "hooks": "./hooks/hooks.json",
   "agents": [
     "./agents/explorer.md",
     "./agents/frontend-dev.md",
