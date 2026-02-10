@@ -117,7 +117,8 @@ The wizard asks which backends to configure and guides you through MCP installat
 | Command | Description |
 |---------|-------------|
 | `/explore <query>` | Deep codebase exploration |
-| `/frontend <task>` | UI/UX development |
+| `/frontend <task>` | UI/UX development (Gemini Flash) |
+| `/reason <task>` | Complex reasoning & debugging (Codex) |
 | `/refactor` | Intelligent refactoring |
 | `/tdd <feature>` | Test-driven development |
 | `/deep <topic>` | Root cause / security audit |
@@ -140,7 +141,7 @@ The wizard asks which backends to configure and guides you through MCP installat
 
 | Backend | Models | Setup |
 |---------|--------|-------|
-| **antigravity-gemini** MCP | Gemini Pro, Gemini Flash | `claude mcp add antigravity-gemini -- <cmd>` |
+| **antigravity-gemini** MCP | Gemini Pro, Gemini Flash | `claude mcp add antigravity-gemini -- npx -y github:rhkdguskim/antigravity-gemini-mcp` |
 | **codex-shell** MCP | OpenAI Codex | `claude mcp add codex-shell -- npx -y @openai/codex-shell-tool-mcp` |
 | **Z.AI** API | GLM-4.7, GLM-4.5-Air | Set `ZHIPU_API_KEY` ([subscribe](https://z.ai/subscribe)) |
 | **Claude** | Opus, Sonnet, Haiku | Always available (native) |
@@ -166,7 +167,7 @@ The wizard asks which backends to configure and guides you through MCP installat
 │                   mannung-agent v2.0                    │
 ├─────────────────────────────────────────────────────────┤
 │                                                         │
-│  17 Skills   11 Agents   16 Commands   5 Modes         │
+│  18 Skills   11 Agents   18 Commands   5 Modes         │
 │                                                         │
 │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐  │
 │  │Gemini Pro│ │Gem. Flash│ │  Codex   │ │ GLM-4.7  │  │

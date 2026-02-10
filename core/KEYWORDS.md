@@ -68,11 +68,17 @@ minor, tweak, adjust, change name, update text, correct,
 formatting, indent, whitespace, comment out, uncomment
 ```
 
-### deep (-> Codex / GLM-4.7)
+### deep (-> Codex)
 ```
 deep, thorough, comprehensive, research, investigate,
-root cause, audit, security review, penetration, vulnerability,
-profiling, benchmark, regression, forensic, trace, diagnose
+root cause, audit, profiling, benchmark, regression,
+forensic, trace, diagnose
+```
+
+### security (-> Codex ONLY — never downgrade)
+```
+security review, penetration, vulnerability, injection,
+xss, csrf, auth bypass, sensitive data, credential
 ```
 
 ### documentation (-> GLM-4.7)

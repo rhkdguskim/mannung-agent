@@ -39,7 +39,7 @@ Automatically routes every development task to the optimal AI model.
 
 ```bash
 # Gemini models via antigravity-gemini MCP
-claude mcp add antigravity-gemini -- <antigravity-gemini-command>
+claude mcp add antigravity-gemini -- npx -y github:rhkdguskim/antigravity-gemini-mcp
 
 # Codex via codex-shell MCP
 claude mcp add codex-shell -- npx -y @openai/codex-shell-tool-mcp
@@ -80,7 +80,7 @@ implement, create, build, write, code, generate, add feature, develop, make
 - Parallel execution: internally dispatches independent subtasks in parallel when possible
 - Progress tracking: reports phase/subtask progress at each step
 
-## Skills (17)
+## Skills (18)
 
 | Skill | Description | Default Model |
 |-------|-------------|---------------|
@@ -101,27 +101,28 @@ implement, create, build, write, code, generate, add feature, develop, make
 | `quick` | Fast simple tasks | Gemini Flash (MCP) |
 | `deep` | Deep analysis & research | Codex / GLM-4.7 |
 | `doc` | Documentation generation | GLM-4.7 |
+| `multi-plan` | Multi-model parallel planning | Auto (parallel) |
 
 ## Agents (11)
 
 | Agent | Persona | Model | Tools |
 |-------|---------|-------|-------|
 | explorer | Codebase Navigator | Gemini Pro (MCP) | Read, Grep, Glob |
-| frontend-dev | UI/UX Specialist | Gemini Flash (MCP) | Read, Edit, Write, Bash |
+| frontend-dev | UI/UX Specialist | Gemini Flash (MCP) | Read, Edit, Write, Bash, Glob, Grep |
 | reasoner | Logic Engine | Codex (MCP) | Read, Grep, Glob, Bash |
 | planner | Strategic Architect | GLM-4.7 | Read, Grep, Glob |
 | reviewer | Quality Guardian | Codex (MCP) | Read, Grep, Glob |
 | refactorer | Code Surgeon | Codex (MCP) | Read, Edit, Write, Grep, Glob |
-| tdd-guide | Test Champion | Codex (MCP) | Read, Edit, Write, Bash |
+| tdd-guide | Test Champion | Codex (MCP) | Read, Edit, Write, Bash, Grep, Glob |
 | architect | System Designer | Claude Opus | Read, Grep, Glob |
 | orchestrator | Multi-Model Conductor | Claude | All |
 | vibe-coder | Autonomous Builder | Auto | All |
 | autopilot | Goal-Driven Executor | Auto | All |
 
-## Commands (16)
+## Commands (18)
 
 `/route`, `/autopilot`, `/vibe`, `/plan`, `/review`, `/refactor`, `/tdd`, `/explore`,
-`/quick`, `/deep`, `/doc`, `/status`, `/setup`, `/doctor`,
+`/frontend`, `/reason`, `/quick`, `/deep`, `/doc`, `/status`, `/setup`, `/doctor`,
 `/config`, `/multi-plan`
 
 ## Keyword Detection
@@ -146,6 +147,33 @@ deep, thorough, comprehensive, research, investigate, root cause, audit, securit
 
 ### Autopilot -> Auto (chains all skills)
 autopilot, finish it, do everything, end to end, build it, complete this, start to finish
+
+## Auto-Routing on First Message (MANDATORY)
+
+When a user sends their first message in a session, BEFORE executing any tools:
+1. Analyze the user's message against the Keyword Detection matrix above
+2. Determine the optimal model/skill for the task
+3. Report the routing decision:
+   ```
+   [mannung-agent] Auto-detected: <category> -> <model> (<backend>)
+   ```
+4. If the task matches a specific skill (e.g., explore, frontend, reason, review), invoke that skill's agent via the Task tool with the appropriate `subagent_type`
+5. If no specific keyword match, use Claude Sonnet (native) for code generation tasks or Claude (current session) for general tasks
+
+### Auto-Routing Decision Table
+
+| User Intent | Detection Signal | Action |
+|-------------|-----------------|--------|
+| Codebase exploration | "find", "search", "where is", "how does X work" | Invoke explorer agent (Gemini Pro) |
+| UI/frontend work | "react", "css", "component", "layout", "style" | Invoke frontend-dev agent (Gemini Flash) |
+| Algorithm/debugging | "optimize", "debug", "algorithm", "performance" | Invoke reasoner agent (Codex) |
+| Planning/design | "plan", "design", "how should we", "approach" | Invoke planner agent (GLM-4.7) |
+| Code review | "review", "check quality", "pr review" | Invoke reviewer agent (Codex) |
+| Documentation | "document", "readme", "write docs" | Invoke doc skill (GLM-4.7) |
+| Simple fix | "fix typo", "rename", "small change" | Handle directly with quick skill |
+| Code generation | "implement", "create", "build", "add feature" | Use Sonnet (native) |
+| Autonomous | "autopilot", "vibe", "just do it", "build it" | Invoke autopilot/vibe skill |
+| Ambiguous/general | No clear match | Use Claude (current session) |
 
 ## Priority Rules
 

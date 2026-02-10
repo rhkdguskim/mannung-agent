@@ -24,6 +24,9 @@ When Quality mode is active:
 | Deep | Codex | Codex |
 | Documentation | Claude Opus | GLM-4.7 |
 | Review | Codex + Gemini Pro | Codex |
+| Refactoring | Codex | Codex |
+| TDD | Codex | Codex |
+| Code Generation | Sonnet + Codex | Sonnet |
 
 ## Extra Steps
 - After implementation: auto-trigger /review

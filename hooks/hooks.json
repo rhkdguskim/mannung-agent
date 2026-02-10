@@ -19,6 +19,15 @@
             "command": "node ./scripts/show-routing.js"
           }
         ]
+      },
+      {
+        "matcher": "Edit|Write|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./scripts/auto-route.js"
+          }
+        ]
       }
     ],
     "PostToolUse": [
@@ -37,7 +46,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node -e \"const fs=require('fs');try{const s=JSON.parse(fs.readFileSync('/tmp/mannung-agent-session.json','utf-8'));const e=Math.round((Date.now()-s.startTime)/1000);const m=Math.floor(e/60);const sec=e%60;console.log('');console.log('[mannung-agent] Session summary');console.log('  Tasks: '+s.taskCount);console.log('  Duration: '+(m>0?m+'m ':'')+sec+'s');console.log('  Tools: '+JSON.stringify(s.tools));console.log('')}catch{console.log('[mannung-agent] Session ended')}\""
+            "command": "node ./scripts/session-summary.js"
           }
         ]
       }

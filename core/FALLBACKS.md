@@ -77,6 +77,12 @@ Codex (MCP) -> GLM-4.7 -> Claude
 ```
 Rationale: Test logic requires strong reasoning.
 
+### Chain K: Code Generation
+```
+Sonnet (native) -> Codex (MCP) -> GLM-4.7 -> Claude
+```
+Rationale: Sonnet is the best balance of quality and speed for everyday coding tasks.
+
 ## Fallback Behavior
 
 1. Try primary model via its MCP tool

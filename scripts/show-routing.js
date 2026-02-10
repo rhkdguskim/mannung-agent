@@ -1,6 +1,8 @@
 #!/usr/bin/env node
-// show-routing.js — Cross-platform model routing display
-// Works on macOS, Linux, and Windows
+// show-routing.js — PreToolUse hook for Task tool routing display
+// Uses shared routing rules from lib/routing-rules.js
+
+const { resolveAgent, detectModel, BOX_WIDTH } = require('./lib/routing-rules');
 
 const input = process.env.CLAUDE_TOOL_INPUT || '';
 if (!input) process.exit(0);
@@ -8,7 +10,6 @@ if (!input) process.exit(0);
 let agent = '';
 let desc = '';
 let bg = false;
-let promptLc = input.toLowerCase();
 
 try {
   const parsed = JSON.parse(input);
@@ -26,39 +27,24 @@ try {
 
 let model = 'Claude';
 let backend = 'Native';
-
-// Detect from subagent_type
-const agentModelMap = {
-  'Explore': ['Gemini Pro', 'antigravity-gemini MCP'],
-  'Plan': ['GLM-4.7', 'Z.AI API'],
-};
-if (agentModelMap[agent]) {
-  [model, backend] = agentModelMap[agent];
-}
-
-// Detect from prompt keywords (priority order: highest first)
-const rules = [
-  { model: 'Autopilot', backend: 'Auto (chained)', cost: '~', pattern: /autopilot|finish.it|do.everything|end.to.end|build.it|complete.this|start.to.finish/ },
-  { model: 'Codex', backend: 'codex-shell MCP', cost: '$$$$', pattern: /codex|algorithm|optimize|debug|reason|complex|tdd|test.*driven|review|refactor|security|performance|concurrent|deadlock|race.condition/ },
-  { model: 'Gemini Pro', backend: 'antigravity-gemini MCP', cost: '$$', pattern: /explore|search|find|grep|codebase|structure|navigate|directory|scan|locate|survey|traverse/ },
-  { model: 'Gemini Flash', backend: 'antigravity-gemini MCP', cost: '$', pattern: /frontend|react|vue|angular|svelte|css|html|ui|ux|component|style|layout|tailwind|design|animation/ },
-  { model: 'Sonnet', backend: 'Claude (native)', cost: '$$$', pattern: /implement|create|build|write.*code|generate|add.*feature|develop|scaffold|new.*endpoint|new.*module|new.*file/ },
-  { model: 'GLM-4.7', backend: 'Z.AI API', cost: '$', pattern: /glm|plan\b|document|readme|changelog|tutorial|guide|specification|roadmap|estimate/ },
-];
-
 let cost = '--';
 
-for (const rule of rules) {
-  if (rule.pattern.test(promptLc)) {
-    model = rule.model;
-    backend = rule.backend;
-    cost = rule.cost;
-    break;
-  }
+// 1. Try agent type mapping
+const agentResult = resolveAgent(agent);
+if (agentResult) {
+  [model, backend] = agentResult;
+}
+
+// 2. Try keyword detection from prompt
+const detected = detectModel(input);
+if (detected) {
+  model = detected.model;
+  backend = detected.backend;
+  cost = detected.cost;
 }
 
 // Format output
-const w = 41;
+const w = BOX_WIDTH;
 const h = '\u2500'.repeat(w);
 const mode = bg ? ' [PARALLEL]' : '';
 const tag = `mannung-agent routing${mode}`;

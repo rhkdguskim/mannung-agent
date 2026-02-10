@@ -49,7 +49,7 @@ Based on answer, execute:
 claude mcp add antigravity-gemini -- antigravity-gemini
 
 # Option 2: npx
-claude mcp add antigravity-gemini -- npx -y antigravity-gemini
+claude mcp add antigravity-gemini -- npx -y github:rhkdguskim/antigravity-gemini-mcp
 
 # Option 3: already installed — just verify
 claude mcp list 2>/dev/null | grep antigravity-gemini

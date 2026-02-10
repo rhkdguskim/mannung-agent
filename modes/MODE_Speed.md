@@ -24,6 +24,9 @@ When Speed mode is active:
 | Deep | Gemini Flash | Codex |
 | Documentation | Gemini Flash | GLM-4.7 |
 | Review | Gemini Flash | Codex |
+| Refactoring | Gemini Flash | Codex |
+| TDD | Gemini Flash | Codex |
+| Code Generation | Gemini Flash | Sonnet |
 
 ## Trade-off
 - Speed mode sacrifices accuracy for responsiveness

@@ -26,7 +26,8 @@ Balanced mode uses the standard keyword-based routing from CLAUDE.md:
 | Review | Codex | codex-shell MCP |
 | Refactoring | Codex | codex-shell MCP |
 | TDD | Codex | codex-shell MCP |
-| Default | Gemini Flash | antigravity-gemini MCP |
+| Code Generation | Sonnet | Claude (native) |
+| Default | Sonnet | Claude (native) |
 
 ## Philosophy
 - Right model for the right task

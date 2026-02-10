@@ -24,6 +24,9 @@ When Cost mode is active:
 | Deep | GLM-4.7 | Codex |
 | Documentation | GLM-4.7 | GLM-4.7 |
 | Review | GLM-4.7 | Codex |
+| Refactoring | GLM-4.7 | Codex |
+| TDD | GLM-4.7 | Codex |
+| Code Generation | GLM-4.7 | Sonnet |
 
 ## Exception
 - Security-critical tasks STILL use Codex (never downgrade security)

@@ -32,19 +32,24 @@ function httpGet(url, headers = {}) {
   });
 }
 
+// Cache MCP list to avoid multiple calls
+let _mcpListCache = null;
+function getMcpList() {
+  if (_mcpListCache !== null) return _mcpListCache;
+  _mcpListCache = exec('claude mcp list 2>&1');
+  return _mcpListCache;
+}
+
 async function checkAntigravityGemini() {
-  const mcpList = exec('claude mcp list 2>&1');
-  const configured = mcpList.includes('antigravity-gemini');
+  const configured = getMcpList().includes('antigravity-gemini');
   if (!configured) {
-    return { name: 'antigravity-gemini', status: 'NOT CONFIGURED', models: [], fix: 'claude mcp add antigravity-gemini -- <command>' };
+    return { name: 'antigravity-gemini', status: 'NOT CONFIGURED', models: [], fix: 'claude mcp add antigravity-gemini -- npx -y github:rhkdguskim/antigravity-gemini-mcp' };
   }
-  // MCP is configured — we can't directly test it from here, but we know it's registered
   return { name: 'antigravity-gemini', status: 'CONFIGURED', models: ['gemini-3-pro-high', 'gemini-3-flash'], fix: null };
 }
 
 async function checkCodex() {
-  const mcpList = exec('claude mcp list 2>&1');
-  const configured = mcpList.includes('codex');
+  const configured = getMcpList().includes('codex');
   if (!configured) {
     return { name: 'codex-shell', status: 'NOT CONFIGURED', models: [], fix: 'claude mcp add codex-shell -- npx -y @openai/codex-shell-tool-mcp' };
   }

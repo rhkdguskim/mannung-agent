@@ -80,7 +80,7 @@ echo "Claude: ALWAYS AVAILABLE (native session)"
 │ Claude           │ OK       │ Opus, Sonnet, Haiku        │
 ├──────────────────┴──────────┴────────────────────────────┤
 │ Routing Mode: [balanced/cost/quality/speed]              │
-│ Skills: 14 | Agents: 10 | Commands: 14                  │
+│ Skills: 18 | Agents: 11 | Commands: 18                  │
 └──────────────────────────────────────────────────────────┘
 ```
 
