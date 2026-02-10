@@ -2,7 +2,7 @@
 // Single source of truth for keyword detection and model mapping
 // Used by: show-routing.js, show-progress.js, auto-route.js
 
-const AGENT_MODEL_MAP = {
+var AGENT_MODEL_MAP = {
   'Explore': ['Gemini Pro', 'antigravity-gemini MCP'],
   'Plan': ['GLM-4.7', 'Z.AI API'],
   'mannung-agent:explorer': ['Gemini Pro', 'antigravity-gemini MCP'],
@@ -19,7 +19,7 @@ const AGENT_MODEL_MAP = {
 };
 
 // Priority order: highest first. First match wins.
-const KEYWORD_RULES = [
+var KEYWORD_RULES = [
   { model: 'Autopilot', backend: 'Auto (chained)', cost: '~', category: 'autopilot',
     pattern: /autopilot|finish\s+it|do\s+everything|end\s+to\s+end|build\s+it|complete\s+this|start\s+to\s+finish/ },
   { model: 'Codex', backend: 'codex-shell MCP', cost: '$$$$', category: 'security',
@@ -38,7 +38,7 @@ const KEYWORD_RULES = [
     pattern: /fix\s+typo|rename|simple|trivial|one[\s-]line|minor\s+fix|formatting/ },
 ];
 
-const COST_INDICATORS = {
+var COST_INDICATORS = {
   'low': '$',
   'medium': '$$',
   'medium-high': '$$$',
@@ -51,7 +51,7 @@ const COST_INDICATORS = {
   'varies-parallel': '~ (parallel)',
 };
 
-const COST_TIER_MAP = {
+var COST_TIER_MAP = {
   'Autopilot': 'varies',
   'Codex': 'high',
   'Gemini Pro': 'medium',
@@ -63,13 +63,18 @@ const COST_TIER_MAP = {
   'Auto': 'varies',
 };
 
-const BOX_WIDTH = 41;
+var BOX_WIDTH = 41;
 
 function detectModel(text) {
-  const lc = text.toLowerCase();
-  for (const rule of KEYWORD_RULES) {
-    if (rule.pattern.test(lc)) {
-      return { model: rule.model, backend: rule.backend, cost: rule.cost, category: rule.category };
+  var lc = text.toLowerCase();
+  for (var i = 0; i < KEYWORD_RULES.length; i++) {
+    if (KEYWORD_RULES[i].pattern.test(lc)) {
+      return {
+        model: KEYWORD_RULES[i].model,
+        backend: KEYWORD_RULES[i].backend,
+        cost: KEYWORD_RULES[i].cost,
+        category: KEYWORD_RULES[i].category,
+      };
     }
   }
   return null;
@@ -88,13 +93,13 @@ function getCostTier(model) {
 }
 
 module.exports = {
-  AGENT_MODEL_MAP,
-  KEYWORD_RULES,
-  COST_INDICATORS,
-  COST_TIER_MAP,
-  BOX_WIDTH,
-  detectModel,
-  resolveAgent,
-  getCostIndicator,
-  getCostTier,
+  AGENT_MODEL_MAP: AGENT_MODEL_MAP,
+  KEYWORD_RULES: KEYWORD_RULES,
+  COST_INDICATORS: COST_INDICATORS,
+  COST_TIER_MAP: COST_TIER_MAP,
+  BOX_WIDTH: BOX_WIDTH,
+  detectModel: detectModel,
+  resolveAgent: resolveAgent,
+  getCostIndicator: getCostIndicator,
+  getCostTier: getCostTier,
 };
