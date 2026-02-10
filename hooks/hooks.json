@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node ./scripts/session-start.js"
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/session-start.js\""
           }
         ]
       }
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node ./scripts/show-routing.js"
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/show-routing.js\""
           }
         ]
       },
@@ -25,7 +25,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node ./scripts/auto-route.js"
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/auto-route.js\""
           }
         ]
       }
@@ -36,7 +36,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node ./scripts/show-progress.js"
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/show-progress.js\""
           }
         ]
       }
@@ -46,7 +46,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node ./scripts/session-summary.js"
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/session-summary.js\""
           }
         ]
       }
