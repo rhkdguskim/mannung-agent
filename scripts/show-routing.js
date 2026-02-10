@@ -38,18 +38,21 @@ if (agentModelMap[agent]) {
 
 // Detect from prompt keywords (priority order: highest first)
 const rules = [
-  { model: 'Autopilot', backend: 'Auto (chained)', pattern: /autopilot|finish.it|do.everything|end.to.end|build.it|complete.this|start.to.finish/ },
-  { model: 'Codex', backend: 'codex-shell MCP', pattern: /codex|algorithm|optimize|debug|reason|complex|tdd|test.*driven|review|refactor|security|performance|concurrent|deadlock|race.condition/ },
-  { model: 'Gemini Pro', backend: 'antigravity-gemini MCP', pattern: /explore|search|find|grep|codebase|structure|navigate|directory|scan|locate|survey|traverse/ },
-  { model: 'Gemini Flash', backend: 'antigravity-gemini MCP', pattern: /frontend|react|vue|angular|svelte|css|html|ui|ux|component|style|layout|tailwind|design|animation/ },
-  { model: 'Sonnet', backend: 'Claude (native)', pattern: /implement|create|build|write.*code|generate|add.*feature|develop|scaffold|new.*endpoint|new.*module|new.*file/ },
-  { model: 'GLM-4.7', backend: 'Z.AI API', pattern: /glm|plan\b|document|readme|changelog|tutorial|guide|specification|roadmap|estimate/ },
+  { model: 'Autopilot', backend: 'Auto (chained)', cost: '~', pattern: /autopilot|finish.it|do.everything|end.to.end|build.it|complete.this|start.to.finish/ },
+  { model: 'Codex', backend: 'codex-shell MCP', cost: '$$$$', pattern: /codex|algorithm|optimize|debug|reason|complex|tdd|test.*driven|review|refactor|security|performance|concurrent|deadlock|race.condition/ },
+  { model: 'Gemini Pro', backend: 'antigravity-gemini MCP', cost: '$$', pattern: /explore|search|find|grep|codebase|structure|navigate|directory|scan|locate|survey|traverse/ },
+  { model: 'Gemini Flash', backend: 'antigravity-gemini MCP', cost: '$', pattern: /frontend|react|vue|angular|svelte|css|html|ui|ux|component|style|layout|tailwind|design|animation/ },
+  { model: 'Sonnet', backend: 'Claude (native)', cost: '$$$', pattern: /implement|create|build|write.*code|generate|add.*feature|develop|scaffold|new.*endpoint|new.*module|new.*file/ },
+  { model: 'GLM-4.7', backend: 'Z.AI API', cost: '$', pattern: /glm|plan\b|document|readme|changelog|tutorial|guide|specification|roadmap|estimate/ },
 ];
+
+let cost = '--';
 
 for (const rule of rules) {
   if (rule.pattern.test(promptLc)) {
     model = rule.model;
     backend = rule.backend;
+    cost = rule.cost;
     break;
   }
 }
@@ -66,6 +69,7 @@ console.log(`\u2502 ${tag.padEnd(w - 1)}\u2502`);
 console.log(`\u251C${h}\u2524`);
 console.log(`\u2502 Model:   ${model.padEnd(w - 11)}\u2502`);
 console.log(`\u2502 Backend: ${backend.padEnd(w - 11)}\u2502`);
+console.log(`\u2502 Cost:    ${cost.padEnd(w - 11)}\u2502`);
 if (desc) {
   const t = desc.length > (w - 11) ? desc.substring(0, w - 14) + '...' : desc;
   console.log(`\u2502 Task:    ${t.padEnd(w - 11)}\u2502`);

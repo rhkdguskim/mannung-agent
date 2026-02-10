@@ -154,6 +154,25 @@ Based on the goal type, chain these skills automatically:
 | Performance | explore → deep (Codex) → reason → implement → tdd |
 | Full project | explore → plan → implement → frontend → tdd → review → doc |
 
+## Token Optimization (Built-in)
+
+Autopilot automatically optimizes token usage:
+- **Phase 1 (Explore)**: Uses Glob (free) -> Grep (cheap) -> Read (targeted only)
+- **Phase 2 (Plan)**: Uses GLM-4.7 ($) instead of Opus ($$$$) for planning
+- **Phase 3 (Implement)**: Routes each subtask to cheapest capable model
+- **Phase 4 (Verify)**: Runs only existing tests, no redundant re-reads
+- **Phase 5 (Review)**: Sends only diffs, not full files
+- **Parallel dispatch**: Only for truly independent subtasks (avoids duplicate context cost)
+- **Model escalation**: Starts cheap, upgrades only if quality is insufficient
+
+Cost tier guide displayed in routing:
+```
+$ = GLM-4.5-Air, Gemini Flash, GLM-4.7
+$$ = Gemini Pro
+$$$ = Claude Sonnet
+$$$$ = Codex, Claude Opus
+```
+
 ## Quality Guardrails
 
 Even in full autopilot, ALWAYS enforce:
