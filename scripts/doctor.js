@@ -63,12 +63,11 @@ async function checkAntigravityGemini() {
 async function checkCodex() {
   const configured = getMcpList().includes('codex');
   if (!configured) {
-    const npx = process.platform === 'win32' ? 'npx.cmd' : 'npx';
-    return { name: 'codex-shell', status: 'NOT CONFIGURED', models: [], fix: `claude mcp add codex-shell -- ${npx} -y @openai/codex-shell-tool-mcp` };
+    return { name: 'codex-shell (optional)', status: 'NOT CONFIGURED', models: [], fix: null, note: 'Optional: claude mcp add codex-shell -- npx -y @openai/codex-shell-tool-mcp' };
   }
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
-    return { name: 'codex-shell', status: 'MCP OK, NO API KEY', models: ['codex'], fix: 'Set OPENAI_API_KEY environment variable' };
+    return { name: 'codex-shell (optional)', status: 'MCP OK, NO API KEY', models: ['codex'], fix: 'Set OPENAI_API_KEY environment variable' };
   }
   return { name: 'codex-shell', status: 'READY', models: ['codex'], fix: null };
 }

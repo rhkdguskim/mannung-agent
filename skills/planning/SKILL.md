@@ -1,18 +1,24 @@
 ---
 name: planning
-description: Decompose complex tasks into hierarchical steps.
+description: "Alias for the plan skill. Decomposes complex tasks into hierarchical steps. Keywords: plan, decompose, break down, task breakdown"
 ---
 
-# Planning Skill
+# Planning — Task Decomposition
 
-This skill organizes complex objectives into manageable sub-tasks.
+This skill is an alias for the **plan** skill. Use `/plan` for full implementation planning.
 
-## Instructions
-1.  **Decompose**: Break the main objective into 3-5 high-level phases.
-2.  **Detail**: For the immediate next phase, break it down into actionable steps.
-3.  **Assign**: Determine which "Agent Persona" (Frontend, Backend, Tester) is best suited for each step.
-4.  **Execute**: Execute the steps sequentially, updating the plan as you go.
+## Redirect
+When this skill is invoked, execute the **plan** skill protocol instead.
+See: `skills/plan/SKILL.md` for the complete planning protocol.
 
-## Usage
-Use this skill when a user request is too large to be solved in a single turn.
-Create a `PLAN.md` file to track progress if the task spans multiple sessions.
+## Quick Summary
+1. Analyze requirements and clarify scope
+2. Explore codebase for existing patterns
+3. Break down into ordered, atomic tasks with dependencies
+4. Assess risks (technical, integration, performance)
+5. Document plan with task table, risk register, and testing strategy
+
+## Boundaries
+
+**Will**: Plan, decompose, analyze, assess risks
+**Will Not**: Implement code — PLANNING ONLY

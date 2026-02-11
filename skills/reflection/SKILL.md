@@ -1,30 +1,65 @@
 ---
 name: reflection
-description: Perform self-correction and code review before finalizing output.
+description: "Self-review and verification of generated code. Use when: verifying complex implementations, checking for regressions, auditing security of generated code. Keywords: reflect, critique, self-review, verify, correctness, audit"
 ---
 
-# Reflection Skill
+# Reflection — Self-Review & Verification
 
-This skill enables the agent to critically evaluate its own work for correctness, security, and best practices.
+Critically evaluate generated code for correctness, security, and quality before finalizing.
 
-## When to use
-- After generating complex code.
-- When fixing bugs to ensure the fix doesn't introduce regressions.
-- Before presenting a solution in a high-stakes environment (production code).
+## Target Model
+Primary: **Claude Opus** (native) — deepest reasoning for self-critique
+Secondary: **Gemini Pro** (via antigravity-gemini MCP) — large context for review
+Fallback: Claude Sonnet → Claude
 
-## Instructions
-1.  **Analyze**: Review the generated code or solution.
-2.  **Critique**: Identify potential issues:
-    - Logic errors?
-    - Security vulnerabilities?
-    - Performance bottlenecks?
-    - Style guide violations?
-3.  **Refine**: If issues are found, re-write the code to address them.
-4.  **Verify**: Creating a small test case or mental walkthrough to ensure correctness.
-5.  **Report**: If significant issues, design questions, or future improvements are identified that cannot be resolved immediately:
-    - Automatically create a GitHub issue to track them.
-    - Command: `gh issue create --title "Reflection: [Topic]" --body "[Analysis & Questions]"`
-    - This allows the team to provide feedback based on the issue.
+## When to Activate
 
-## Usage
-Simply invoke this thought process using the `sequential-thinking` tool before outputting the final response.
+- After generating complex code (multi-file, algorithm-heavy)
+- When fixing bugs that could introduce regressions
+- Before presenting solutions for production/security-critical code
+- When user explicitly asks to double-check or verify work
+
+## Reflection Protocol
+
+### Step 1: Re-Read
+- Read the generated/modified code completely
+- Read the surrounding context (tests, callers, related files)
+
+### Step 2: Critique (5 Dimensions)
+1. **Logic**: Does the code do what it's supposed to? Edge cases handled?
+2. **Security**: Any injection, XSS, auth bypass, data leak risks?
+3. **Performance**: Any N+1 queries, unnecessary loops, memory leaks?
+4. **Style**: Consistent with project conventions?
+5. **Regressions**: Could this break existing functionality?
+
+### Step 3: Verify
+- Trace through the code mentally with 2-3 test scenarios
+- Check boundary conditions (empty input, null, overflow, concurrent)
+- Verify error handling paths
+
+### Step 4: Refine
+- If issues found, fix them immediately
+- Document what was caught and fixed
+
+### Step 5: Report
+```
+## Reflection Report
+
+### Changes Reviewed
+[list of files/functions reviewed]
+
+### Issues Found & Fixed
+- [issue] → [fix applied]
+
+### Verification
+- Scenario 1: [input] → [expected] ✓
+- Scenario 2: [input] → [expected] ✓
+
+### Confidence Level
+[High/Medium/Low] — [reasoning]
+```
+
+## Boundaries
+
+**Will**: Re-read code, critique, verify, fix issues found, report findings
+**Will Not**: Skip verification steps, rubber-stamp code without actual review

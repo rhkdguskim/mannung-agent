@@ -16,8 +16,8 @@ Automatically routes every development task to the optimal AI model.
 │  └────┬─────┘ └────┬─────┘ └────┬─────┘ └────┬─────┘ └───┬────┘ │
 │       │            │            │            │           │      │
 │  ┌────▼─────┐ ┌────▼─────┐ ┌────▼─────┐ ┌────▼─────┐ ┌──▼───┐ │
-│  │Gemini Pro│ │Gem. Flash│ │  Codex   │ │ GLM-4.7  │ │ Auto │ │
-│  │  (MCP)   │ │  (MCP)   │ │  (MCP)   │ │ (Z.AI)   │ │Route │ │
+│  │Gemini Pro│ │Gem. Flash│ │  Claude  │ │ GLM-4.7  │ │ Auto │ │
+│  │  (MCP)   │ │  (MCP)   │ │  Opus   │ │ (Z.AI)   │ │Route │ │
 │  └──────────┘ └──────────┘ └──────────┘ └──────────┘ └──────┘ │
 │                                                                   │
 │  Fallback: Claude (current session)                              │
@@ -29,11 +29,11 @@ Automatically routes every development task to the optimal AI model.
 | Backend | Models | Access Method | Best For |
 |---------|--------|---------------|----------|
 | antigravity-gemini MCP | Gemini 3 Pro, Gemini 3 Flash | `claude mcp add` | Exploration, Frontend |
-| codex-shell MCP | OpenAI Codex | `claude mcp add` | Complex Reasoning |
-| Z.AI API | GLM-4.7, GLM-4.5-Air | Anthropic-compatible proxy | Cost-effective General |
+| Z.AI API | GLM-4.7, GLM-4.5-Air | Anthropic-compatible proxy | Cost-effective Planning/Docs |
+| Claude Opus | Opus 4.6 | Current session (native) | Reasoning, Review, Architecture |
 | Claude Sonnet | Sonnet 4.5 | Current session (native) | Code Generation, Implementation |
-| Claude Opus | Opus 4.6 | Current session (native) | Architecture, Critical Decisions |
 | Claude Haiku | Haiku 4.5 | Current session (native) | Quick Lookups, Fallback |
+| codex-shell MCP (optional) | OpenAI Codex | `claude mcp add` | Complex Reasoning (if configured) |
 
 ## MCP Configuration
 
@@ -41,12 +41,10 @@ Automatically routes every development task to the optimal AI model.
 # Gemini models via antigravity-gemini MCP
 claude mcp add antigravity-gemini -- npx -y github:rhkdguskim/antigravity-gemini-mcp
 
-# Codex via codex-shell MCP
-claude mcp add codex-shell -- npx -y @openai/codex-shell-tool-mcp
+# (Optional) Codex via codex-shell MCP — requires OPENAI_API_KEY
+# claude mcp add codex-shell -- npx -y @openai/codex-shell-tool-mcp
 
-# Z.AI: Set environment variables
-# ANTHROPIC_BASE_URL=https://api.z.ai/api/anthropic
-# ANTHROPIC_AUTH_TOKEN=<your-z-ai-api-key>
+# Z.AI: Set ZHIPU_API_KEY environment variable
 ```
 
 ## Routing Modes
@@ -54,8 +52,8 @@ claude mcp add codex-shell -- npx -y @openai/codex-shell-tool-mcp
 - **auto**: Keyword-based auto-detection (default)
 - **vibe**: Fully autonomous - agent picks everything
 - **cost**: Minimize cost (GLM-4.5-Air -> Gemini Flash -> others)
-- **quality**: Maximize quality (Codex -> Gemini Pro -> Claude Opus)
-- **speed**: Minimize latency (Gemini Flash -> GLM Flash -> Haiku)
+- **quality**: Maximize quality (Claude Opus -> Gemini Pro -> Sonnet)
+- **speed**: Minimize latency (Gemini Flash -> Haiku -> GLM Flash)
 - **balanced**: Balanced cost/quality/speed
 
 ## Code Generation Strategy
@@ -64,11 +62,10 @@ For implementation tasks (writing/editing code), prefer **Claude Sonnet** as the
 - Best balance of quality and speed for everyday coding
 - Sonnet handles: feature implementation, bug fixes, multi-file changes, iterative coding
 - Escalate to Opus only for: architecture decisions, complex system design, critical security code
-- Use Codex for: algorithm optimization, complex debugging, performance-critical code
 - Use Gemini Flash for: simple UI changes, CSS tweaks, quick edits
 
 ### Code Generation Keywords -> Sonnet (native)
-implement, create, build, write, code, generate, add feature, develop, make
+implement, create, write code, generate, add feature, develop, scaffold
 
 ## Autopilot Mode
 
@@ -80,7 +77,7 @@ implement, create, build, write, code, generate, add feature, develop, make
 - Parallel execution: internally dispatches independent subtasks in parallel when possible
 - Progress tracking: reports phase/subtask progress at each step
 
-## Skills (18)
+## Skills (23)
 
 | Skill | Description | Default Model |
 |-------|-------------|---------------|
@@ -92,16 +89,21 @@ implement, create, build, write, code, generate, add feature, develop, make
 | `config` | Manage API keys & MCP settings | - |
 | `explore` | Codebase analysis & search | Gemini Pro (MCP) |
 | `frontend` | UI/UX development | Gemini Flash (MCP) |
-| `reason` | Complex logic & algorithms | Codex (MCP) |
+| `reason` | Complex logic & algorithms | Claude Opus |
 | `plan` | Implementation planning | GLM-4.7 / Claude Opus |
-| `review` | Multi-model code review | Codex (MCP) |
-| `refactor` | Intelligent refactoring | Codex (MCP) |
-| `tdd` | Test-driven development | Codex (MCP) |
+| `planning` | Task decomposition (alias for plan) | GLM-4.7 / Claude Opus |
+| `review` | Multi-model code review | Claude Opus |
+| `refactor` | Intelligent refactoring | Claude Sonnet |
+| `tdd` | Test-driven development | Claude Sonnet |
 | `vibe` | Fully autonomous vibe coding | Auto |
 | `quick` | Fast simple tasks | Gemini Flash (MCP) |
-| `deep` | Deep analysis & research | Codex / GLM-4.7 |
+| `deep` | Deep analysis & research | Claude Opus / GLM-4.7 |
 | `doc` | Documentation generation | GLM-4.7 |
 | `multi-plan` | Multi-model parallel planning | Auto (parallel) |
+| `git-advanced` | Git workflow & conventional commits | Claude |
+| `memory` | Persistent cross-session context | Claude |
+| `reflection` | Self-review & verification | Claude Opus |
+| `web-research` | Internet-powered research | Gemini Pro |
 
 ## Agents (11)
 
@@ -109,41 +111,50 @@ implement, create, build, write, code, generate, add feature, develop, make
 |-------|---------|-------|-------|
 | explorer | Codebase Navigator | Gemini Pro (MCP) | Read, Grep, Glob |
 | frontend-dev | UI/UX Specialist | Gemini Flash (MCP) | Read, Edit, Write, Bash, Glob, Grep |
-| reasoner | Logic Engine | Codex (MCP) | Read, Grep, Glob, Bash |
+| reasoner | Logic Engine | Claude Opus | Read, Grep, Glob, Bash |
 | planner | Strategic Architect | GLM-4.7 | Read, Grep, Glob |
-| reviewer | Quality Guardian | Codex (MCP) | Read, Grep, Glob |
-| refactorer | Code Surgeon | Codex (MCP) | Read, Edit, Write, Grep, Glob |
-| tdd-guide | Test Champion | Codex (MCP) | Read, Edit, Write, Bash, Grep, Glob |
+| reviewer | Quality Guardian | Claude Opus | Read, Grep, Glob |
+| refactorer | Code Surgeon | Claude Sonnet | Read, Edit, Write, Grep, Glob |
+| tdd-guide | Test Champion | Claude Sonnet | Read, Edit, Write, Bash, Grep, Glob |
 | architect | System Designer | Claude Opus | Read, Grep, Glob |
 | orchestrator | Multi-Model Conductor | Claude | All |
 | vibe-coder | Autonomous Builder | Auto | All |
 | autopilot | Goal-Driven Executor | Auto | All |
 
-## Commands (18)
+## Commands (23)
 
-`/route`, `/autopilot`, `/vibe`, `/plan`, `/review`, `/refactor`, `/tdd`, `/explore`,
+`/route`, `/autopilot`, `/vibe`, `/plan`, `/planning`, `/review`, `/refactor`, `/tdd`, `/explore`,
 `/frontend`, `/reason`, `/quick`, `/deep`, `/doc`, `/status`, `/setup`, `/doctor`,
-`/config`, `/multi-plan`
+`/config`, `/multi-plan`, `/git-advanced`, `/memory`, `/reflection`, `/web-research`
 
 ## Keyword Detection
 
 ### Exploration -> Gemini Pro (antigravity-gemini MCP)
-search, find, grep, glob, explore, codebase, file, directory, where, locate, scan, structure, tree, navigate
+search, find, grep, explore, codebase, structure, navigate, directory, scan, locate, traverse
 
 ### Frontend -> Gemini Flash (antigravity-gemini MCP)
-react, vue, angular, svelte, next, nuxt, css, scss, sass, html, jsx, tsx, component, ui, ux, frontend, style, layout, responsive, animation, tailwind, design
+react, vue, angular, svelte, css, html, ui, ux, component, style, layout, tailwind, design, animation
 
-### Reasoning -> Codex (codex-shell MCP)
-algorithm, optimize, performance, debug, logic, math, complex, reasoning, proof, analyze, architecture, design pattern, data structure, concurrent, thread
+### Reasoning -> Claude Opus (native)
+algorithm, optimize, debug, reason, tdd, test-driven, review, refactor, concurrent, deadlock, race condition
 
 ### Planning -> GLM-4.7 (Z.AI API)
-plan, design, blueprint, strategy, roadmap, estimate, scope, requirement, specification
+plan, decompose, break down, write readme, write doc, write changelog, specification, roadmap, estimate
+
+### Security -> Claude Opus (native)
+security, vulnerability, injection, xss, csrf, auth bypass
+
+### Web Research -> Gemini Pro (antigravity-gemini MCP)
+research, web search, google, internet, browse, online docs
+
+### Code Generation -> Sonnet (native)
+implement, create, write code, generate, add feature, develop, scaffold
+
+### Review -> Claude Opus (native)
+review, code quality, pull request review, pr review
 
 ### Quick -> Gemini Flash (antigravity-gemini MCP)
-fix, typo, rename, simple, small, quick, trivial, one-line, minor
-
-### Deep -> Codex (codex-shell MCP) / GLM-4.7
-deep, thorough, comprehensive, research, investigate, root cause, audit, security
+fix typo, rename, simple, trivial, one-line, minor fix, formatting
 
 ### Autopilot -> Auto (chains all skills)
 autopilot, finish it, do everything, end to end, build it, complete this, start to finish
@@ -166,21 +177,22 @@ When a user sends their first message in a session, BEFORE executing any tools:
 |-------------|-----------------|--------|
 | Codebase exploration | "find", "search", "where is", "how does X work" | Invoke explorer agent (Gemini Pro) |
 | UI/frontend work | "react", "css", "component", "layout", "style" | Invoke frontend-dev agent (Gemini Flash) |
-| Algorithm/debugging | "optimize", "debug", "algorithm", "performance" | Invoke reasoner agent (Codex) |
+| Algorithm/debugging | "optimize", "debug", "algorithm", "performance" | Invoke reasoner agent (Claude Opus) |
 | Planning/design | "plan", "design", "how should we", "approach" | Invoke planner agent (GLM-4.7) |
-| Code review | "review", "check quality", "pr review" | Invoke reviewer agent (Codex) |
-| Documentation | "document", "readme", "write docs" | Invoke doc skill (GLM-4.7) |
+| Code review | "review", "check quality", "pr review" | Invoke reviewer agent (Claude Opus) |
+| Documentation | "write readme", "write docs" | Invoke doc skill (GLM-4.7) |
 | Simple fix | "fix typo", "rename", "small change" | Handle directly with quick skill |
-| Code generation | "implement", "create", "build", "add feature" | Use Sonnet (native) |
-| Autonomous | "autopilot", "vibe", "just do it", "build it" | Invoke autopilot/vibe skill |
+| Code generation | "implement", "create", "add feature" | Use Sonnet (native) |
+| Autonomous | "autopilot", "vibe", "build it" | Invoke autopilot/vibe skill |
+| Web research | "research", "search the web" | Invoke web-research skill (Gemini Pro) |
 | Ambiguous/general | No clear match | Use Claude (current session) |
 
 ## Priority Rules
 
-1. **RED CRITICAL**: Security vulnerabilities -> always Codex + security-reviewer
+1. **RED CRITICAL**: Security vulnerabilities -> always Claude Opus + security review
 2. **RED CRITICAL**: Data loss risk -> always confirm before execution
 3. **YELLOW IMPORTANT**: Explicit model override -> respect user choice
-4. **YELLOW IMPORTANT**: Reasoning keywords -> Codex (highest accuracy)
+4. **YELLOW IMPORTANT**: Reasoning keywords -> Claude Opus (highest accuracy)
 5. **GREEN RECOMMENDED**: Exploration keywords -> Gemini Pro (largest context)
 6. **GREEN RECOMMENDED**: Frontend keywords -> Gemini Flash (fastest)
 7. **GREEN RECOMMENDED**: Default -> cost-effective model based on mode
@@ -188,10 +200,9 @@ When a user sends their first message in a session, BEFORE executing any tools:
 ## Fallback Chains
 
 ```
-Gemini Pro unavailable  -> GLM-4.7 -> Codex -> Claude
-Gemini Flash unavailable -> GLM-4.5-Air -> Claude Haiku -> Claude
-Codex unavailable       -> GLM-4.7 -> Claude Opus -> Claude
-GLM-4.7 unavailable     -> Gemini Pro -> Codex -> Claude
+Gemini Pro unavailable  -> GLM-4.7 -> Claude Opus -> Claude
+Gemini Flash unavailable -> Claude Haiku -> Claude
+GLM-4.7 unavailable     -> Gemini Pro -> Claude Opus -> Claude
 All backends down       -> Claude (current session) with warning
 ```
 

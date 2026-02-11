@@ -7,15 +7,23 @@ var AGENT_MODEL_MAP = {
   'Plan': ['GLM-4.7', 'Z.AI API'],
   'mannung-agent:explorer': ['Gemini Pro', 'antigravity-gemini MCP'],
   'mannung-agent:frontend-dev': ['Gemini Flash', 'antigravity-gemini MCP'],
-  'mannung-agent:reasoner': ['Codex', 'codex-shell MCP'],
+  'mannung-agent:reasoner': ['Claude Opus', 'Native'],
   'mannung-agent:planner': ['GLM-4.7', 'Z.AI API'],
-  'mannung-agent:reviewer': ['Codex', 'codex-shell MCP'],
-  'mannung-agent:refactorer': ['Codex', 'codex-shell MCP'],
-  'mannung-agent:tdd-guide': ['Codex', 'codex-shell MCP'],
+  'mannung-agent:reviewer': ['Claude Opus', 'Native'],
+  'mannung-agent:refactorer': ['Claude Sonnet', 'Native'],
+  'mannung-agent:tdd-guide': ['Claude Sonnet', 'Native'],
   'mannung-agent:architect': ['Claude Opus', 'Native'],
   'mannung-agent:orchestrator': ['Claude', 'Native'],
   'mannung-agent:vibe-coder': ['Auto', 'Multi-model'],
   'mannung-agent:autopilot': ['Auto', 'Multi-model (chained)'],
+};
+
+// Fallback chains when primary model is unavailable
+var FALLBACK_CHAINS = {
+  'Codex': ['Claude Opus', 'Gemini Pro', 'Claude'],
+  'Gemini Pro': ['GLM-4.7', 'Claude Opus', 'Claude'],
+  'Gemini Flash': ['Claude Haiku', 'Claude'],
+  'GLM-4.7': ['Gemini Pro', 'Claude Opus', 'Claude'],
 };
 
 // Priority order: highest first. First match wins.
@@ -25,16 +33,16 @@ var KEYWORD_RULES = [
     pattern: /autopilot|finish\s+it|do\s+everything|end\s+to\s+end|build\s+it|complete\s+this|start\s+to\s+finish/
   },
   {
-    model: 'Codex', backend: 'codex-shell MCP', cost: '$$$$', category: 'security',
+    model: 'Claude Opus', backend: 'Native', cost: '$$$$', category: 'security',
     pattern: /security|vulnerabilit|injection|xss|csrf|auth\s*bypass/
   },
   {
-    model: 'Codex', backend: 'codex-shell MCP', cost: '$$$$', category: 'reasoning',
-    pattern: /codex|algorithm|optimiz|debug|reason|complex|tdd|test[\s-]*driven|review|refactor|performance|concurrent|deadlock|race\s*condition/
+    model: 'Claude Opus', backend: 'Native', cost: '$$$$', category: 'reasoning',
+    pattern: /algorithm|optimiz|debug\b|reason|tdd|test[\s-]*driven|refactor|concurrent|deadlock|race\s*condition/
   },
   {
     model: 'Gemini Pro', backend: 'antigravity-gemini MCP', cost: '$$', category: 'exploration',
-    pattern: /explore|search|find|grep|codebase|structure|navigate|directory|scan|locate|survey|traverse/
+    pattern: /explore|\bsearch\b|find|grep|codebase|structure|navigate|directory|scan|locate|survey|traverse/
   },
   {
     model: 'Gemini Pro', backend: 'antigravity-gemini MCP', cost: '$$', category: 'web-research',
@@ -46,15 +54,19 @@ var KEYWORD_RULES = [
   },
   {
     model: 'GLM-4.7', backend: 'Z.AI API', cost: '$', category: 'planning',
-    pattern: /glm|plan\b|decompose|break\s*down|document|readme|changelog|tutorial|guide|specification|roadmap|estimate/
+    pattern: /glm|plan\b|decompose|break\s*down|write\s*(a\s+)?(readme|doc|changelog|tutorial|guide)|specification|roadmap|estimate/
   },
   {
     model: 'Sonnet', backend: 'Claude (native)', cost: '$$$', category: 'code-generation',
-    pattern: /implement|create\s+(a\s+)?(function|class|component|module|endpoint|api|service|feature)|build|write\s*code|generate|add\s*feature|develop|scaffold|new\s*endpoint|new\s*module|new\s*file/
+    pattern: /implement|create\s+(a\s+)?(function|class|component|module|endpoint|api|service|feature)|write\s*code|generate|add\s*feature|develop|scaffold|new\s*endpoint|new\s*module|new\s*file/
   },
   {
-    model: 'Codex', backend: 'codex-shell MCP', cost: '$$$$', category: 'reflection',
+    model: 'Claude Opus', backend: 'Native', cost: '$$$$', category: 'reflection',
     pattern: /reflect|critique|self[\s-]*review|verify|correctness|audit/
+  },
+  {
+    model: 'Claude Opus', backend: 'Native', cost: '$$$$', category: 'review',
+    pattern: /\breview\b|code\s*quality|pull\s*request\s*review|pr\s*review/
   },
   {
     model: 'Claude', backend: 'Native', cost: '$$$', category: 'memory',
@@ -62,11 +74,11 @@ var KEYWORD_RULES = [
   },
   {
     model: 'Claude', backend: 'Native', cost: '$$$', category: 'git-advanced',
-    pattern: /git|commit|branch|merge|rebase|squash|release|pull\s*request|pr\b/
+    pattern: /\bgit\s+(branch|rebase|squash|cherry|bisect|stash|tag)\b|merge\s*conflict|release\s*tag|conventional\s*commit/
   },
   {
     model: 'Gemini Flash', backend: 'antigravity-gemini MCP', cost: '$', category: 'quick',
-    pattern: /fix\s+typo|rename|simple|trivial|one[\s-]line|minor\s+fix|formatting/
+    pattern: /fix\s+(a\s+|the\s+)?typo|rename|trivial|one[\s-]line|minor\s+fix|formatting/
   },
 ];
 
@@ -89,6 +101,7 @@ var COST_TIER_MAP = {
   'Gemini Pro': 'medium',
   'Gemini Flash': 'low',
   'Sonnet': 'medium-high',
+  'Claude Sonnet': 'medium-high',
   'GLM-4.7': 'low',
   'Claude Opus': 'high',
   'Claude': 'medium-high',
@@ -124,14 +137,20 @@ function getCostTier(model) {
   return COST_TIER_MAP[model] || 'medium';
 }
 
+function getFallback(model) {
+  return FALLBACK_CHAINS[model] || ['Claude'];
+}
+
 module.exports = {
   AGENT_MODEL_MAP: AGENT_MODEL_MAP,
   KEYWORD_RULES: KEYWORD_RULES,
   COST_INDICATORS: COST_INDICATORS,
   COST_TIER_MAP: COST_TIER_MAP,
+  FALLBACK_CHAINS: FALLBACK_CHAINS,
   BOX_WIDTH: BOX_WIDTH,
   detectModel: detectModel,
   resolveAgent: resolveAgent,
   getCostIndicator: getCostIndicator,
   getCostTier: getCostTier,
+  getFallback: getFallback,
 };
