@@ -20,22 +20,54 @@ var AGENT_MODEL_MAP = {
 
 // Priority order: highest first. First match wins.
 var KEYWORD_RULES = [
-  { model: 'Autopilot', backend: 'Auto (chained)', cost: '~', category: 'autopilot',
-    pattern: /autopilot|finish\s+it|do\s+everything|end\s+to\s+end|build\s+it|complete\s+this|start\s+to\s+finish/ },
-  { model: 'Codex', backend: 'codex-shell MCP', cost: '$$$$', category: 'security',
-    pattern: /security|vulnerabilit|injection|xss|csrf|auth\s*bypass/ },
-  { model: 'Codex', backend: 'codex-shell MCP', cost: '$$$$', category: 'reasoning',
-    pattern: /codex|algorithm|optimiz|debug|reason|complex|tdd|test[\s-]*driven|review|refactor|performance|concurrent|deadlock|race\s*condition/ },
-  { model: 'Gemini Pro', backend: 'antigravity-gemini MCP', cost: '$$', category: 'exploration',
-    pattern: /explore|search|find|grep|codebase|structure|navigate|directory|scan|locate|survey|traverse/ },
-  { model: 'Gemini Flash', backend: 'antigravity-gemini MCP', cost: '$', category: 'frontend',
-    pattern: /frontend|react|vue|angular|svelte|\bcss\b|\bhtml\b|\bui\b|\bux\b|component|style|layout|tailwind|design|animation/ },
-  { model: 'GLM-4.7', backend: 'Z.AI API', cost: '$', category: 'planning',
-    pattern: /glm|plan\b|document|readme|changelog|tutorial|guide|specification|roadmap|estimate/ },
-  { model: 'Sonnet', backend: 'Claude (native)', cost: '$$$', category: 'code-generation',
-    pattern: /implement|create\s+(a\s+)?(function|class|component|module|endpoint|api|service|feature)|build|write\s*code|generate|add\s*feature|develop|scaffold|new\s*endpoint|new\s*module|new\s*file/ },
-  { model: 'Gemini Flash', backend: 'antigravity-gemini MCP', cost: '$', category: 'quick',
-    pattern: /fix\s+typo|rename|simple|trivial|one[\s-]line|minor\s+fix|formatting/ },
+  {
+    model: 'Autopilot', backend: 'Auto (chained)', cost: '~', category: 'autopilot',
+    pattern: /autopilot|finish\s+it|do\s+everything|end\s+to\s+end|build\s+it|complete\s+this|start\s+to\s+finish/
+  },
+  {
+    model: 'Codex', backend: 'codex-shell MCP', cost: '$$$$', category: 'security',
+    pattern: /security|vulnerabilit|injection|xss|csrf|auth\s*bypass/
+  },
+  {
+    model: 'Codex', backend: 'codex-shell MCP', cost: '$$$$', category: 'reasoning',
+    pattern: /codex|algorithm|optimiz|debug|reason|complex|tdd|test[\s-]*driven|review|refactor|performance|concurrent|deadlock|race\s*condition/
+  },
+  {
+    model: 'Gemini Pro', backend: 'antigravity-gemini MCP', cost: '$$', category: 'exploration',
+    pattern: /explore|search|find|grep|codebase|structure|navigate|directory|scan|locate|survey|traverse/
+  },
+  {
+    model: 'Gemini Pro', backend: 'antigravity-gemini MCP', cost: '$$', category: 'web-research',
+    pattern: /research|web\s*search|google|internet|browse|online\s*docs/
+  },
+  {
+    model: 'Gemini Flash', backend: 'antigravity-gemini MCP', cost: '$', category: 'frontend',
+    pattern: /frontend|react|vue|angular|svelte|\bcss\b|\bhtml\b|\bui\b|\bux\b|component|style|layout|tailwind|design|animation/
+  },
+  {
+    model: 'GLM-4.7', backend: 'Z.AI API', cost: '$', category: 'planning',
+    pattern: /glm|plan\b|decompose|break\s*down|document|readme|changelog|tutorial|guide|specification|roadmap|estimate/
+  },
+  {
+    model: 'Sonnet', backend: 'Claude (native)', cost: '$$$', category: 'code-generation',
+    pattern: /implement|create\s+(a\s+)?(function|class|component|module|endpoint|api|service|feature)|build|write\s*code|generate|add\s*feature|develop|scaffold|new\s*endpoint|new\s*module|new\s*file/
+  },
+  {
+    model: 'Codex', backend: 'codex-shell MCP', cost: '$$$$', category: 'reflection',
+    pattern: /reflect|critique|self[\s-]*review|verify|correctness|audit/
+  },
+  {
+    model: 'Claude', backend: 'Native', cost: '$$$', category: 'memory',
+    pattern: /remember|recall|memory|context|save\s*preference|load\s*preference/
+  },
+  {
+    model: 'Claude', backend: 'Native', cost: '$$$', category: 'git-advanced',
+    pattern: /git|commit|branch|merge|rebase|squash|release|pull\s*request|pr\b/
+  },
+  {
+    model: 'Gemini Flash', backend: 'antigravity-gemini MCP', cost: '$', category: 'quick',
+    pattern: /fix\s+typo|rename|simple|trivial|one[\s-]line|minor\s+fix|formatting/
+  },
 ];
 
 var COST_INDICATORS = {

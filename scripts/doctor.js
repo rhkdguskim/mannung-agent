@@ -8,15 +8,25 @@ const http = require('http');
 
 const W = 55;
 const H = '\u2500'.repeat(W);
-const results = [];
 
 function line(text) { console.log(`\u2502 ${text.padEnd(W - 1)}\u2502`); }
 function sep() { console.log(`\u251C${H}\u2524`); }
 
 function exec(cmd, timeout = 8000) {
   try {
-    return execSync(cmd, { encoding: 'utf-8', timeout, stdio: ['pipe', 'pipe', 'pipe'] }).trim();
-  } catch { return ''; }
+    // stdio: 'pipe' allows us to catch stdout. stderr is largely ignored unless we catch the error.
+    // We explicitly do NOT use shell redirection (2>&1) to support Windows cmd/PowerShell better.
+    return execSync(cmd, {
+      encoding: 'utf-8',
+      timeout,
+      stdio: 'pipe', // pipe stdin, stdout, stderr
+      windowsHide: true
+    }).trim();
+  } catch (e) {
+    // If the command fails, it might be because the tool isn't installed.
+    // In that case, we return an empty string or the stdout if available.
+    return e.stdout ? e.stdout.toString().trim() : '';
+  }
 }
 
 function httpGet(url, headers = {}) {
@@ -36,14 +46,16 @@ function httpGet(url, headers = {}) {
 let _mcpListCache = null;
 function getMcpList() {
   if (_mcpListCache !== null) return _mcpListCache;
-  _mcpListCache = exec('claude mcp list 2>&1');
+  // Removed 2>&1 to be safe on Windows
+  _mcpListCache = exec('claude mcp list');
   return _mcpListCache;
 }
 
 async function checkAntigravityGemini() {
   const configured = getMcpList().includes('antigravity-gemini');
   if (!configured) {
-    return { name: 'antigravity-gemini', status: 'NOT CONFIGURED', models: [], fix: 'claude mcp add antigravity-gemini -- npx -y github:rhkdguskim/antigravity-gemini-mcp' };
+    const npx = process.platform === 'win32' ? 'npx.cmd' : 'npx';
+    return { name: 'antigravity-gemini', status: 'NOT CONFIGURED', models: [], fix: `claude mcp add antigravity-gemini -- ${npx} -y github:rhkdguskim/antigravity-gemini-mcp` };
   }
   return { name: 'antigravity-gemini', status: 'CONFIGURED', models: ['gemini-3-pro-high', 'gemini-3-flash'], fix: null };
 }
@@ -51,7 +63,8 @@ async function checkAntigravityGemini() {
 async function checkCodex() {
   const configured = getMcpList().includes('codex');
   if (!configured) {
-    return { name: 'codex-shell', status: 'NOT CONFIGURED', models: [], fix: 'claude mcp add codex-shell -- npx -y @openai/codex-shell-tool-mcp' };
+    const npx = process.platform === 'win32' ? 'npx.cmd' : 'npx';
+    return { name: 'codex-shell', status: 'NOT CONFIGURED', models: [], fix: `claude mcp add codex-shell -- ${npx} -y @openai/codex-shell-tool-mcp` };
   }
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
